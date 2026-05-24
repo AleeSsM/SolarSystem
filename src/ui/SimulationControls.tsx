@@ -29,7 +29,7 @@ export function SimulationControls() {
     : formatSimulatedTime(simulatedDays)
 
   return (
-    <HudPanel id="time" title="Tiempo" className="hud-panel--time" tabClassName="hud-tab--time">
+    <HudPanel id="time" title="Tiempo" tabClassName="hud-tab--time">
       <div className="sim-hud sim-hud--embedded">
         <div className="sim-hud__time">
           <span className="sim-hud__time-label">{timeLabel}</span>

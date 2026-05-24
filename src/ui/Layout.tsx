@@ -12,43 +12,34 @@ import { Sidebar } from './Sidebar'
 
 export function Layout() {
   const introActive = useAppStore((s) => s.introActive)
-  const sidebarOpen = useAppStore((s) => s.hudPanels.sidebar)
-  const toggleHudPanel = useAppStore((s) => s.toggleHudPanel)
 
   return (
-    <div
-      className={`app-layout ${introActive ? 'app-layout--intro' : ''} ${!sidebarOpen ? 'app-layout--no-sidebar' : ''}`}
-    >
+    <div className={`app-layout ${introActive ? 'app-layout--intro' : ''}`}>
       <main className="viewport">
         <Viewport3D />
-        <HudPanel id="top" title="Opciones" className="hud-panel--top" tabClassName="hud-tab--top">
-          <div className="top-hud">
-            <HelicalMotionHud />
-            <SourceLinkHud />
-          </div>
-        </HudPanel>
         <IntroOverlay />
         <TravelOverlay />
+
         <div className="hud-stack hud-stack--left">
           <CameraControls />
           <TeacherModeControls />
+          <SimulationControls />
         </div>
-        <SimulationControls />
-        {!introActive && !sidebarOpen && (
-          <button
-            type="button"
-            className="hud-tab hud-tab--sidebar"
-            onClick={() => toggleHudPanel('sidebar')}
-          >
-            Info
-          </button>
+
+        {!introActive && (
+          <div className="hud-stack hud-stack--top-right">
+            <HudPanel id="sidebar" title="Info" className="hud-panel--info" tabClassName="hud-tab--info">
+              <Sidebar />
+            </HudPanel>
+            <HudPanel id="top" title="Opciones" className="hud-panel--top" tabClassName="hud-tab--top">
+              <div className="top-hud">
+                <HelicalMotionHud />
+                <SourceLinkHud />
+              </div>
+            </HudPanel>
+          </div>
         )}
       </main>
-      {!introActive && sidebarOpen && (
-        <HudPanel id="sidebar" title="Info" className="hud-panel--sidebar" tabClassName="hud-tab--sidebar">
-          <Sidebar />
-        </HudPanel>
-      )}
     </div>
   )
 }

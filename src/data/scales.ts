@@ -5,11 +5,11 @@ const DISTANCE = { base: 14, factor: 9.2, exponent: 0.8 } as const
 /** Tierra en escena (ratios NASA lineales). */
 export const EARTH_SCENE_RADIUS = 0.38
 
-/** Mercurio: primera orbita al doble de distancia al Sol. */
-export const MERCURY_ORBIT_BOOST = 2
+/** Mercurio mantiene distancia AU real; el boost rompía el orden (quedaba más lejos que Venus). */
+export const MERCURY_ORBIT_BOOST = 1
 
-/** Sol al 1.5× del radio equilibrado (75 % del boost anterior). */
-export const SUN_SIZE_BOOST = 1.5
+/** Sol más compacto para no tapar las órbitas interiores. */
+export const SUN_SIZE_BOOST = 1
 
 export const PLANET_SIZE = {
   mercury: 0.383,
@@ -116,5 +116,28 @@ export function getSunView(sunRadius: number) {
   return {
     position: new Vector3(0, sunRadius * 0.22, distance),
     target: new Vector3(0, 0, 0),
+  }
+}
+
+const PLANET_ORDER = [
+  'mercury',
+  'venus',
+  'earth',
+  'mars',
+  'jupiter',
+  'saturn',
+  'uranus',
+  'neptune',
+] as const
+
+if (import.meta.env.DEV) {
+  for (let i = 1; i < PLANET_ORDER.length; i++) {
+    const prev = getPlanetOrbitRadiusById(PLANET_ORDER[i - 1])
+    const next = getPlanetOrbitRadiusById(PLANET_ORDER[i])
+    if (next <= prev) {
+      console.error(
+        `[scales] Orden orbital incorrecto: ${PLANET_ORDER[i]} (${next}) debe estar más lejos que ${PLANET_ORDER[i - 1]} (${prev})`,
+      )
+    }
   }
 }
