@@ -1,22 +1,28 @@
 <p align="center">
 
-```
-      *   .       *       .       *       .
-         .     _________     .
-    *        /    *    \        *
-            |   ( @ )   |          <- Sol
-    *        \___:::___/        *
-         .       | |       .
-      *   .       *       .       *       .
-
-        SISTEMA SOLAR 3D  ·  WEBGL
-```
+# Sistema Solar 3D
 
 <br/>
 
 <img src="https://img.shields.io/badge/IPN-Instituto_Politécnico_Nacional-7B1E1E?style=for-the-badge&labelColor=1a1a2e" alt="IPN"/>
+&nbsp;
 <img src="https://img.shields.io/badge/demo-GitHub_Pages-3d6cff?style=for-the-badge&labelColor=0d1117" alt="Demo"/>
-<img src="https://img.shields.io/badge/stack-React_·_Three.js_·_R3F-61dafb?style=for-the-badge&labelColor=0d1117" alt="Stack"/>
+&nbsp;
+<img src="https://img.shields.io/badge/WebGL-3D-0d1117?style=for-the-badge&labelColor=1f2937" alt="WebGL"/>
+
+<br/><br/>
+
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript"/>
+&nbsp;
+<img src="https://img.shields.io/badge/React-20232a?style=flat-square&logo=react&logoColor=61dafb" alt="React"/>
+&nbsp;
+<img src="https://img.shields.io/badge/Three.js-000?style=flat-square&logo=threedotjs&logoColor=white" alt="Three.js"/>
+&nbsp;
+<img src="https://img.shields.io/badge/React_Three_Fiber-000?style=flat-square&logo=react&logoColor=white" alt="R3F"/>
+&nbsp;
+<img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite"/>
+&nbsp;
+<img src="https://img.shields.io/badge/Zustand-764ABC?style=flat-square" alt="Zustand"/>
 
 <br/><br/>
 
@@ -130,14 +136,6 @@ npm run lint
 ---
 
 ## Stack técnico
-
-<p align="center">
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TS"/>
-  <img src="https://img.shields.io/badge/React-20232a?style=flat-square&logo=react&logoColor=61dafb" alt="React"/>
-  <img src="https://img.shields.io/badge/Three.js-000?style=flat-square&logo=threedotjs&logoColor=white" alt="Three"/>
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite"/>
-  <img src="https://img.shields.io/badge/Zustand-764ABC?style=flat-square" alt="Zustand"/>
-</p>
 
 | Capa | Herramienta |
 |:-----|:------------|
