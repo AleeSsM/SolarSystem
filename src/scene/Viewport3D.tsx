@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { CameraRig } from '../camera/CameraRig'
-import { SYSTEM_OVERVIEW } from '../camera/constants'
+import { INTRO_START } from '../camera/introSequence'
 import { useAppStore } from '../store/useAppStore'
 import { SolarScene } from './SolarScene'
 
@@ -9,11 +9,7 @@ export function Viewport3D() {
   return (
     <Canvas
       camera={{
-        position: [
-          SYSTEM_OVERVIEW.position.x,
-          SYSTEM_OVERVIEW.position.y,
-          SYSTEM_OVERVIEW.position.z,
-        ],
+        position: [INTRO_START.position.x, INTRO_START.position.y, INTRO_START.position.z],
         fov: 55,
         near: 0.1,
         far: 2000,
@@ -21,6 +17,7 @@ export function Viewport3D() {
       gl={{ antialias: true, alpha: false }}
       dpr={[1, 2]}
       onPointerMissed={() => {
+        if (useAppStore.getState().introActive) return
         useAppStore.getState().selectPlanet(null)
       }}
     >

@@ -11,21 +11,30 @@ import {
   SYSTEM_OVERVIEW,
   TRANSITION_THRESHOLD,
   getFollowCameraOffset,
+  getFollowDistanceFromZoom,
   getFollowZoomLimits,
   smoothDampFactor,
 } from './constants'
 import { getPlanetPosition } from './getPlanetPosition'
+import {
+  INTRO_DURATIONS,
+  INTRO_START,
+  sampleIntroFrame,
+  type IntroStage,
+} from './introSequence'
 
 function updateFollowTargets(
   planetId: string,
   desiredTarget: Vector3,
   desiredCameraPos: Vector3,
+  followZoom: number,
 ) {
   const planet = getPlanetById(planetId)
   if (!planet) return false
 
   const target = new Vector3(...getPlanetPosition(planet))
-  const offset = getFollowCameraOffset(planet.radius)
+  const dist = getFollowDistanceFromZoom(planet.radius, followZoom)
+  const offset = getFollowCameraOffset(planet.radius).normalize().multiplyScalar(dist)
   desiredTarget.copy(target)
   desiredCameraPos.copy(target.clone().add(offset))
   return true
@@ -39,10 +48,30 @@ export function CameraRig() {
   const followPlanetId = useAppStore((s) => s.followPlanetId)
   const cameraTransition = useAppStore((s) => s.cameraTransition)
   const phase = useAppStore((s) => s.phase)
+  const introActive = useAppStore((s) => s.introActive)
+  const followZoom = useAppStore((s) => s.followZoom)
 
   const desiredCameraPos = useRef(new Vector3())
   const desiredTarget = useRef(new Vector3())
   const transitionActive = useRef(false)
+
+  const introStage = useRef<IntroStage>('void')
+  const introElapsed = useRef(0)
+  const introHoldElapsed = useRef(0)
+  const introPos = useRef(new Vector3().copy(INTRO_START.position))
+  const introTarget = useRef(new Vector3().copy(INTRO_START.target))
+
+  useEffect(() => {
+    introStage.current = 'void'
+    introElapsed.current = 0
+    introHoldElapsed.current = 0
+    introPos.current.copy(INTRO_START.position)
+    introTarget.current.copy(INTRO_START.target)
+    if ('fov' in camera) {
+      camera.fov = 52
+      camera.updateProjectionMatrix()
+    }
+  }, [camera])
 
   useEffect(() => {
     const controls = controlsRef.current
@@ -63,7 +92,8 @@ export function CameraRig() {
 
   useEffect(() => {
     if (cameraTransition === 'follow' && followPlanetId) {
-      updateFollowTargets(followPlanetId, desiredTarget.current, desiredCameraPos.current)
+      const { followZoom } = useAppStore.getState()
+      updateFollowTargets(followPlanetId, desiredTarget.current, desiredCameraPos.current, followZoom)
       transitionActive.current = true
       return
     }
@@ -82,14 +112,84 @@ export function CameraRig() {
     }
   }, [cameraTransition, followPlanetId])
 
+  useEffect(() => {
+    if (cameraMode !== 'follow' || !followPlanetId || introActive) return
+    const controls = controlsRef.current
+    if (!controls) return
+    const planet = getPlanetById(followPlanetId)
+    if (!planet) return
+
+    const dist = getFollowDistanceFromZoom(planet.radius, followZoom)
+    const offset = camera.position.clone().sub(controls.target)
+    if (offset.lengthSq() < 0.001) {
+      offset.copy(getFollowCameraOffset(planet.radius))
+    }
+    offset.normalize().multiplyScalar(dist)
+    camera.position.copy(controls.target).add(offset)
+    controls.update()
+  }, [cameraMode, followPlanetId, introActive, followZoom, camera])
+
   useFrame((_, delta) => {
     const controls = controlsRef.current
     if (!controls) return
 
-    const completeTransition = useAppStore.getState().completeCameraTransition
+    const state = useAppStore.getState()
+    const { completeCameraTransition, setIntroTitleVisible, finishIntro } = state
+
+    if (state.introActive) {
+      introElapsed.current += delta
+
+      const stage = introStage.current
+      const duration = INTRO_DURATIONS[stage]
+      const t = Math.min(1, introElapsed.current / duration)
+      const holdElapsed = stage === 'hold' ? introHoldElapsed.current : 0
+
+      const fov = sampleIntroFrame(stage, t, holdElapsed, introPos.current, introTarget.current)
+
+      camera.position.copy(introPos.current)
+      controls.target.copy(introTarget.current)
+
+      if ('fov' in camera) {
+        camera.fov += (fov - camera.fov) * Math.min(1, delta * 4)
+        camera.updateProjectionMatrix()
+      }
+
+      if (stage === 'hold') {
+        introHoldElapsed.current += delta
+      }
+
+      if (t >= 1) {
+        if (stage === 'void') {
+          introStage.current = 'swoop'
+          introElapsed.current = 0
+        } else if (stage === 'swoop') {
+          introStage.current = 'hero'
+          introElapsed.current = 0
+        } else if (stage === 'hero') {
+          introStage.current = 'hold'
+          introElapsed.current = 0
+          introHoldElapsed.current = 0
+          setIntroTitleVisible(true)
+        } else if (stage === 'hold') {
+          introStage.current = 'pullback'
+          introElapsed.current = 0
+          setIntroTitleVisible(false)
+        } else {
+          finishIntro()
+        }
+      }
+
+      controls.update()
+      return
+    }
 
     if (transitionActive.current && cameraTransition === 'follow' && followPlanetId) {
-      updateFollowTargets(followPlanetId, desiredTarget.current, desiredCameraPos.current)
+      updateFollowTargets(
+        followPlanetId,
+        desiredTarget.current,
+        desiredCameraPos.current,
+        state.followZoom,
+      )
     }
 
     if (transitionActive.current && cameraTransition) {
@@ -107,7 +207,7 @@ export function CameraRig() {
 
       if (posDone && targetDone) {
         transitionActive.current = false
-        completeTransition()
+        completeCameraTransition()
         controls.update()
       }
       return
@@ -120,7 +220,6 @@ export function CameraRig() {
         const prevTarget = controls.target.clone()
         controls.target.lerp(target, smoothDampFactor(delta, 6))
 
-        // Mover la camara junto con el planeta para no desplazar el zoom del usuario
         const targetDelta = controls.target.clone().sub(prevTarget)
         camera.position.add(targetDelta)
       }
@@ -128,6 +227,8 @@ export function CameraRig() {
 
     controls.update()
   })
+
+  const controlsEnabled = phase !== 'teacher' && !introActive
 
   return (
     <OrbitControls
@@ -139,7 +240,7 @@ export function CameraRig() {
       minDistance={CAMERA_LIMITS.minDistance}
       maxDistance={CAMERA_LIMITS.maxDistance}
       maxPolarAngle={CAMERA_LIMITS.maxPolarAngle}
-      enabled={phase !== 'teacher'}
+      enabled={controlsEnabled}
     />
   )
 }

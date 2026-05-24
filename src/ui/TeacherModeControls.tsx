@@ -3,11 +3,14 @@ import { useAppStore } from '../store/useAppStore'
 
 export function TeacherModeControls() {
   const phase = useAppStore((s) => s.phase)
+  const introActive = useAppStore((s) => s.introActive)
   const teacherStepIndex = useAppStore((s) => s.teacherStepIndex)
   const startTeacherMode = useAppStore((s) => s.startTeacherMode)
   const exitTeacherMode = useAppStore((s) => s.exitTeacherMode)
   const nextTeacherStep = useAppStore((s) => s.nextTeacherStep)
   const prevTeacherStep = useAppStore((s) => s.prevTeacherStep)
+
+  if (introActive) return null
 
   if (phase !== 'teacher') {
     return (

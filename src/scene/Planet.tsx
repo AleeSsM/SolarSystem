@@ -23,6 +23,7 @@ export function Planet({ data }: PlanetProps) {
   const showLabels = useAppStore((s) => s.showLabels)
   const setHoveredPlanet = useAppStore((s) => s.setHoveredPlanet)
   const followPlanet = useAppStore((s) => s.followPlanet)
+  const introActive = useAppStore((s) => s.introActive)
   const timeMode = useAppStore((s) => s.timeMode)
   const planetFill = useAppStore((s) => s.planetFill)
   const material = usePlanetSurfaceMaterial(texture, planetFill)
@@ -54,15 +55,18 @@ export function Planet({ data }: PlanetProps) {
       ref={meshRef}
       name={data.id}
       onPointerOver={(event) => {
+        if (introActive) return
         event.stopPropagation()
         document.body.style.cursor = 'pointer'
         setHoveredPlanet(data.id)
       }}
       onPointerOut={() => {
+        if (introActive) return
         document.body.style.cursor = 'default'
         setHoveredPlanet(null)
       }}
       onClick={(event) => {
+        if (introActive) return
         event.stopPropagation()
         followPlanet(data.id)
       }}

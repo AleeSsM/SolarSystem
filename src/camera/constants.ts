@@ -3,8 +3,9 @@ import { NEPTUNE } from '../data/planets'
 
 const MAX_ORBIT = NEPTUNE.orbitRadius
 
+/** Vista general del sistema (cenital). */
 export const SYSTEM_OVERVIEW = {
-  position: new THREE.Vector3(0, MAX_ORBIT * 0.55, MAX_ORBIT * 0.85),
+  position: new THREE.Vector3(0, MAX_ORBIT * 1.45, 0.001),
   target: new THREE.Vector3(0, 0, 0),
 } as const
 
@@ -39,6 +40,13 @@ export function getFollowZoomLimits(planetRadius: number) {
     minDistance: Math.max(planetRadius * 1.6, 1.2),
     maxDistance: Math.max(base * 10, planetRadius * 150, 90),
   }
+}
+
+/** Distancia camara ↔ planeta segun barra de zoom (0 = lejos, 100 = cerca). */
+export function getFollowDistanceFromZoom(planetRadius: number, zoomPercent: number): number {
+  const { minDistance, maxDistance } = getFollowZoomLimits(planetRadius)
+  const t = Math.min(100, Math.max(0, zoomPercent)) / 100
+  return minDistance + (1 - t) * (maxDistance - minDistance)
 }
 
 export function smoothDampFactor(delta: number, speed = 5): number {

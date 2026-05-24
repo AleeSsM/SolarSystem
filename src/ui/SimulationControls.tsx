@@ -16,8 +16,11 @@ export function SimulationControls() {
   const toggleLabels = useAppStore((s) => s.toggleLabels)
   const planetFill = useAppStore((s) => s.planetFill)
   const setPlanetFill = useAppStore((s) => s.setPlanetFill)
+  const introActive = useAppStore((s) => s.introActive)
   const simulatedDays = useSimulatedTime()
   const isRealTime = timeMode === 'realTime'
+
+  if (introActive) return null
 
   const timeLabel = isRealTime
     ? timeScale > 1

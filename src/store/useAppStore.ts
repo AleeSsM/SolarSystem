@@ -31,6 +31,11 @@ interface AppState {
   showLabels: boolean
   /** 0–100: relleno uniforme en planetas/lunas (no afecta la luz del Sol). */
   planetFill: number
+  /** Animacion de entrada activa (bloquea interaccion). */
+  introActive: boolean
+  introTitleVisible: boolean
+  /** 0 = zoom out, 100 = zoom in (solo al seguir planeta). */
+  followZoom: number
   activeEducationalTab: EducationalTabId
 
   cameraMode: CameraMode
@@ -47,6 +52,9 @@ interface AppState {
   toggleOrbits: () => void
   toggleLabels: () => void
   setPlanetFill: (value: number) => void
+  setFollowZoom: (value: number) => void
+  setIntroTitleVisible: (visible: boolean) => void
+  finishIntro: () => void
   setActiveEducationalTab: (tab: EducationalTabId) => void
 
   followPlanet: (id: string) => void
@@ -102,12 +110,15 @@ export const useAppStore = create<AppState>((set, get) => ({
   teacherStepIndex: 0,
   selectedPlanetId: null,
   hoveredPlanetId: null,
-  isPaused: false,
+  isPaused: true,
   timeScale: 1,
   timeMode: 'simulated',
   showOrbits: true,
   showLabels: false,
   planetFill: 20,
+  introActive: true,
+  introTitleVisible: false,
+  followZoom: 42,
   activeEducationalTab: 'system',
 
   cameraMode: 'free',
@@ -148,6 +159,9 @@ export const useAppStore = create<AppState>((set, get) => ({
   toggleOrbits: () => set((s) => ({ showOrbits: !s.showOrbits })),
   toggleLabels: () => set((s) => ({ showLabels: !s.showLabels })),
   setPlanetFill: (value) => set({ planetFill: Math.min(100, Math.max(0, value)) }),
+  setFollowZoom: (value) => set({ followZoom: Math.min(100, Math.max(0, value)) }),
+  setIntroTitleVisible: (visible) => set({ introTitleVisible: visible }),
+  finishIntro: () => set({ introActive: false, introTitleVisible: false, isPaused: false }),
   setActiveEducationalTab: (tab) => set({ activeEducationalTab: tab }),
 
   followPlanet: (id) =>
@@ -157,6 +171,7 @@ export const useAppStore = create<AppState>((set, get) => ({
       cameraTransition: 'follow',
       selectedPlanetId: id,
       activeEducationalTab: 'planet',
+      followZoom: 42,
     }),
 
   resetCamera: () =>
