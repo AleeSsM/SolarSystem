@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
-import type { Group, Mesh } from 'three'
+import { AdditiveBlending, type Group, type Mesh } from 'three'
 import { SUN } from '../data/planets'
 import { getSunSceneRadius, SUN_SIZE_BOOST } from '../data/scales'
 import { getElapsedDays } from '../hooks/useSimulationClock'
@@ -11,6 +11,45 @@ import { useAppStore } from '../store/useAppStore'
 import { HelicalTrail, SUN_TRAIL } from './HelicalTrail'
 
 const SUN_TRAIL_BASE = getSunSceneRadius() / SUN_SIZE_BOOST
+
+/** Corona siempre visible alrededor del Sol (independiente del modo helicoidal). */
+function SunCorona({ radius }: { radius: number }) {
+  const innerRef = useRef<Mesh>(null)
+  const outerRef = useRef<Mesh>(null)
+
+  useFrame(({ clock }) => {
+    const pulse = 1 + Math.sin(clock.elapsedTime * 0.85) * 0.04
+    if (innerRef.current) innerRef.current.scale.setScalar(1.28 * pulse)
+    if (outerRef.current) outerRef.current.scale.setScalar(1.62 * pulse)
+  })
+
+  return (
+    <group name="sun-corona">
+      <mesh ref={innerRef}>
+        <sphereGeometry args={[radius, 40, 40]} />
+        <meshBasicMaterial
+          color="#ffcc55"
+          transparent
+          opacity={0.14}
+          depthWrite={false}
+          blending={AdditiveBlending}
+          toneMapped={false}
+        />
+      </mesh>
+      <mesh ref={outerRef}>
+        <sphereGeometry args={[radius, 32, 32]} />
+        <meshBasicMaterial
+          color="#ff9933"
+          transparent
+          opacity={0.07}
+          depthWrite={false}
+          blending={AdditiveBlending}
+          toneMapped={false}
+        />
+      </mesh>
+    </group>
+  )
+}
 
 export function Sun() {
   const anchorRef = useRef<Group>(null)
@@ -36,11 +75,13 @@ export function Sun() {
         decay={SUN.lightDecay}
         distance={0}
       />
+      <SunCorona radius={radius} />
       <HelicalTrail
         color={SUN_TRAIL.color}
         width={trailWidth}
         maxPoints={SUN_TRAIL.maxPoints}
         minSampleDist={SUN_TRAIL.minSampleDist}
+        minDaysDelta={SUN_TRAIL.minDaysDelta}
         sourceRef={anchorRef}
         trailKey={helicalOrigin}
       >
@@ -57,12 +98,12 @@ export function Sun() {
               toneMapped={false}
             />
           </mesh>
-          <mesh ref={glowRef} scale={1.12}>
+          <mesh ref={glowRef} scale={1.1}>
             <sphereGeometry args={[radius, 32, 32]} />
             <meshBasicMaterial
               color="#ffaa44"
               transparent
-              opacity={0.18}
+              opacity={0.22}
               depthWrite={false}
               toneMapped={false}
             />

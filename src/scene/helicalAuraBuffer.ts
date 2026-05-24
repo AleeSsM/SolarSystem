@@ -12,13 +12,17 @@ export function pushHelicalAuraSample(
   maxPoints: number,
   sample: HelicalAuraSample,
   minDistance: number,
+  /** Permite estela en cuerpos casi estáticos (p. ej. el Sol en el origen). */
+  minDaysDelta = 0.06,
 ) {
   const last = samples[samples.length - 1]
   if (last) {
     const dx = sample.x - last.x
     const dy = sample.y - last.y
     const dz = sample.z - last.z
-    if (dx * dx + dy * dy + dz * dz < minDistance * minDistance) return
+    const distSq = dx * dx + dy * dy + dz * dz
+    const daysDelta = sample.days - last.days
+    if (distSq < minDistance * minDistance && daysDelta < minDaysDelta) return
   }
 
   samples.push(sample)

@@ -16,6 +16,8 @@ interface HelicalTrailProps {
   width: number
   maxPoints: number
   minSampleDist: number
+  /** Intervalo mínimo entre muestras por tiempo (días simulados). */
+  minDaysDelta?: number
   sourceRef: RefObject<Object3D | null>
   trailKey: string | number
   children: React.ReactNode
@@ -29,6 +31,7 @@ function HelicalAura({
   width,
   maxPoints,
   minSampleDist,
+  minDaysDelta = 0.06,
   sourceRef,
   trailKey,
 }: Omit<HelicalTrailProps, 'children'>) {
@@ -76,10 +79,11 @@ function HelicalAura({
         days: elapsed,
       },
       minSampleDist,
+      minDaysDelta,
     )
 
     const points = buildHelicalAuraPoints(samplesRef.current, elapsed)
-    if (points.length >= 6) {
+    if (points.length >= 3) {
       geometry.setPoints(points, auraAttenuation)
     }
   })
@@ -97,6 +101,7 @@ export function HelicalTrail({
   width,
   maxPoints,
   minSampleDist,
+  minDaysDelta,
   sourceRef,
   trailKey,
   children,
@@ -109,6 +114,7 @@ export function HelicalTrail({
         width={width}
         maxPoints={maxPoints}
         minSampleDist={minSampleDist}
+        minDaysDelta={minDaysDelta}
         sourceRef={sourceRef}
         trailKey={trailKey}
       />
@@ -126,8 +132,9 @@ export function getPlanetTrailSettings(radius: number, orbitRadius: number) {
 }
 
 export const SUN_TRAIL = {
-  width: 8,
-  maxPoints: 340,
-  minSampleDist: 0.12,
-  color: '#fff4a0',
+  width: 10,
+  maxPoints: 420,
+  minSampleDist: 0.02,
+  minDaysDelta: 0.035,
+  color: '#fff0a8',
 } as const
