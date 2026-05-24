@@ -3,6 +3,7 @@ import { formatSimDaysAsDate } from '../simulation/realTime'
 import { useAppStore } from '../store/useAppStore'
 import { formatSimulatedTime, useSimulatedTime } from '../hooks/useSimulatedTime'
 import { HudPanel } from './HudPanel'
+import { ScaleCompareTable } from './ScaleCompareTable'
 
 export function SimulationControls() {
   const isPaused = useAppStore((s) => s.isPaused)
@@ -99,7 +100,6 @@ export function SimulationControls() {
             onChange={(e) => setPlanetFill(Number(e.target.value))}
             title="Aclara la cara oscura del planeta sin quitar la luz solar"
           />
-          <span className="sim-hud__range-value">{planetFill}%</span>
         </div>
         <div className="sim-hud__toggles">
           <label className="sim-hud__toggle">
@@ -119,6 +119,7 @@ export function SimulationControls() {
             Comparar escala
           </label>
         </div>
+        {scaleCompareOpen && <ScaleCompareTable />}
       </div>
     </HudPanel>
   )

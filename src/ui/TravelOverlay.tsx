@@ -13,9 +13,10 @@ export function TravelOverlay() {
   if (!planet) return null
 
   return (
-    <div className="intro-overlay travel-overlay" aria-hidden={false}>
+    <div className="intro-overlay intro-overlay--travel travel-overlay" aria-hidden={false}>
+      <div className="intro-overlay__scrim intro-overlay__scrim--visible" aria-hidden />
       <div
-        className="intro-overlay__title-block intro-overlay__title-block--visible"
+        className="intro-overlay__title-block intro-overlay__title-block--travel intro-overlay__title-block--visible"
         style={{ '--travel-accent': planet.orbitColor } as CSSProperties}
       >
         <p className="intro-overlay__eyebrow">Viajando a</p>

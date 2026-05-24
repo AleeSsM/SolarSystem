@@ -38,8 +38,11 @@ function readInitialPerformanceMode(): boolean {
 }
 
 function readInitialSoundOn(): boolean {
-  if (typeof window === 'undefined') return false
-  return new URLSearchParams(window.location.search).get('sound') === '1'
+  if (typeof window === 'undefined') return true
+  const param = new URLSearchParams(window.location.search).get('sound')
+  if (param === '0') return false
+  if (param === '1') return true
+  return true
 }
 
 interface AppState {

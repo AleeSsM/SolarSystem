@@ -34,6 +34,7 @@ function moonWorldPosition(
     parent.rotationPeriodDays,
     parent.inclinationDeg,
     phaseOffset,
+    parent.ascendingNodeDeg,
   )
   const moonAngle = computeOrbitAngle(elapsed, data.orbitalPeriodDays)
   const local = getCircularOrbitPosition(data.orbitRadius, moonAngle)

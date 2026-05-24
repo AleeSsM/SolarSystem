@@ -15,7 +15,10 @@ export interface PlanetData {
   orbitRadius: number
   orbitalPeriodDays: number
   rotationPeriodDays: number
+  /** Inclinación orbital respecto al plano de la eclíptica (°). */
   inclinationDeg: number
+  /** Longitud del nodo ascendente J2000 (°). */
+  ascendingNodeDeg: number
   orbitPhaseOffset: number
   orbitColor: string
   textureUrl: string
@@ -45,6 +48,7 @@ const p = (
   orbitalPeriodDays: number,
   rotationPeriodDays: number,
   inclinationDeg: number,
+  ascendingNodeDeg: number,
   textureUrl: string,
   sizeRelative: string,
   distanceFromSun: string,
@@ -58,6 +62,7 @@ const p = (
   orbitalPeriodDays,
   rotationPeriodDays: Math.abs(rotationPeriodDays),
   inclinationDeg,
+  ascendingNodeDeg,
   orbitPhaseOffset: ORBIT_PHASE_OFFSET[id],
   orbitColor: ORBIT_COLORS[id],
   textureUrl,
@@ -72,7 +77,8 @@ export const MERCURY = p(
   'Mercurio',
   87.97,
   58.6,
-  7.0,
+  7.005,
+  48.331,
   texturePath('mercury.png'),
   '0.38× Tierra',
   '57.9 millones km (0.39 UA)',
@@ -85,7 +91,8 @@ export const VENUS = p(
   'Venus',
   224.7,
   243,
-  3.4,
+  3.395,
+  76.68,
   texturePath('venus.png'),
   '0.95× Tierra',
   '108.2 millones km (0.72 UA)',
@@ -99,6 +106,7 @@ export const EARTH = p(
   365.25,
   1,
   0,
+  0,
   texturePath('earth.jpg'),
   '1× (referencia)',
   '149.6 millones km (1 UA)',
@@ -111,7 +119,8 @@ export const MARS = p(
   'Marte',
   686.98,
   1.03,
-  1.9,
+  1.85,
+  49.558,
   texturePath('mars.png'),
   '0.53× Tierra',
   '227.9 millones km (1.52 UA)',
@@ -124,7 +133,8 @@ export const JUPITER = p(
   'Jupiter',
   4332.82,
   0.41,
-  1.3,
+  1.303,
+  100.464,
   texturePath('jupiter.png'),
   '11.2× Tierra',
   '778.5 millones km (5.2 UA)',
@@ -137,7 +147,8 @@ export const SATURN = p(
   'Saturno',
   10759.22,
   0.45,
-  2.5,
+  2.489,
+  113.667,
   texturePath('saturn.png'),
   '9.5× Tierra',
   '1,434 millones km (9.5 UA)',
@@ -150,7 +161,8 @@ export const URANUS = p(
   'Urano',
   30688.5,
   0.72,
-  0.8,
+  0.773,
+  74.006,
   texturePath('uranus.png'),
   '4× Tierra',
   '2,871 millones km (19.2 UA)',
@@ -163,7 +175,8 @@ export const NEPTUNE = p(
   'Neptuno',
   60189,
   0.67,
-  1.8,
+  1.77,
+  131.784,
   texturePath('neptune.png'),
   '3.9× Tierra',
   '4,495 millones km (30.1 UA)',

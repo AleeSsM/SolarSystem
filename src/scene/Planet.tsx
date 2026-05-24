@@ -100,6 +100,7 @@ export function Planet({ data }: PlanetProps) {
       data.rotationPeriodDays,
       data.inclinationDeg,
       phaseOffset,
+      data.ascendingNodeDeg,
     )
 
     mesh.position.set(...position)

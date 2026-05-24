@@ -36,6 +36,7 @@ export function SolarScene() {
                 radius={getPlanetOrbitRadiusById(planet.id)}
                 color={planet.orbitColor}
                 inclinationDeg={planet.inclinationDeg}
+                ascendingNodeDeg={planet.ascendingNodeDeg}
               />
             )}
             <Planet data={planet} />

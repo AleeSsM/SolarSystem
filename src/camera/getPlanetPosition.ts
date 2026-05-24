@@ -17,6 +17,7 @@ export function getPlanetPosition(planet: PlanetData): Vec3 {
     planet.rotationPeriodDays,
     planet.inclinationDeg,
     getPlanetPhaseOffset(planet.id, timeMode, planet.orbitPhaseOffset),
+    planet.ascendingNodeDeg,
   )
   return position
 }

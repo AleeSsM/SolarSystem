@@ -6,6 +6,7 @@ import { IntroOverlay } from './IntroOverlay'
 import { TravelOverlay } from './TravelOverlay'
 import { SimulationControls } from './SimulationControls'
 import { Sidebar } from './Sidebar'
+import { KeyboardHints } from './KeyboardHints'
 import { TopActionBar } from './TopActionBar'
 
 export function Layout() {
@@ -20,10 +21,13 @@ export function Layout() {
 
         {!introActive && <TopActionBar />}
 
-        <div className="hud-stack hud-stack--left">
-          <CameraControls />
-          <SimulationControls />
-        </div>
+        {!introActive && (
+          <div className="hud-stack hud-stack--left">
+            <CameraControls />
+            <SimulationControls />
+            <KeyboardHints />
+          </div>
+        )}
 
         {!introActive && (
           <HudPanel id="sidebar" title="Info" className="hud-panel--info" tabClassName="hud-tab--info">
