@@ -1,0 +1,205 @@
+</
+================================================================================
+  PROYECTO: SISTEMA SOLAR 3D INTERACTIVO — PLAN PASO A PASO (PROMPT POR PROMPT)
+================================================================================
+
+Objetivo: Simulador educativo 3D del Sistema Solar con navegacion libre,
+datos cientificos, fisica visual coherente y UI de nivel tesis.
+
+Stack: Vite + TypeScript + React + Three.js + React Three Fiber + Zustand
+
+Regla: Una fase por sesion. No avanzar si la fase anterior no cumple su entregable.
+
+--------------------------------------------------------------------------------
+FASE 0 — FUNDACION (ESTE ES EL PASO 1)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Empecemos Fase 0: configura Vite + React + TypeScript + R3F + Zustand.
+   Layout fullscreen (canvas 3D + panel lateral derecho). Estructura de carpetas
+   segun arquitectura. Pantalla con fondo estrellado estatico y panel vacio."
+
+ENTREGABLE:
+  [x] Proyecto corre con npm run dev
+  [x] Layout: canvas 3D izquierda + panel UI derecha
+  [x] Carpetas: data/, simulation/, scene/, camera/, interaction/, ui/, hooks/, docs/
+  [x] Zustand store basico (placeholder)
+  [x] README con objetivos y arquitectura
+  [x] Fondo estrellado estatico en el canvas
+
+CRITERIO DE ACEPTACION:
+  Abrir localhost y ver estrellas + panel lateral con titulo del proyecto.
+
+--------------------------------------------------------------------------------
+FASE 1 — SOL + TIERRA DE PRUEBA (PASO 2)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 1: Implementa el Sol (PointLight + material emisivo) y la Tierra como
+   unico planeta de prueba. Rotacion propia + orbita circular alrededor del Sol.
+   Datos iniciales en data/planets.ts. Logica orbital en simulation/ sin Three.js."
+
+ENTREGABLE:
+  [x] Sol con luz puntual y brillo emisivo
+  [x] Tierra con textura, rotacion y orbita
+  [x] simulation/orbit.ts calcula posiciones
+  [x] Un solo planeta valida el pipeline completo
+
+CRITERIO DE ACEPTACION:
+  Tierra orbita al Sol y rota sobre su eje de forma visible.
+
+--------------------------------------------------------------------------------
+FASE 2 — SISTEMA ORBITAL COMPLETO (PASO 3)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 2: Agrega los 8 planetas (Mercurio a Neptuno) usando data/planets.ts.
+   Funcion generica updateOrbit(). Velocidades relativas correctas. Orbitas
+   visibles opcionales (circulos). NO agregar UI todavia."
+
+ENTREGABLE:
+  [x] 8 planetas con texturas y datos completos
+  [x] Velocidades orbitales relativas coherentes
+  [x] Orbitas visibles toggleables (preparar para Fase 5)
+  [x] Inclinacion orbital basica (opcional)
+
+CRITERIO DE ACEPTACION:
+  Sistema completo orbitando; Júpiter mas lento que Mercurio.
+
+--------------------------------------------------------------------------------
+FASE 3 — CAMARA (PASO 4)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 3: Implementa camara libre (OrbitControls), modo seguir planeta
+   seleccionado, reset view y transiciones suaves entre modos."
+
+ENTREGABLE:
+  [x] Modo libre: zoom, rotacion, pan
+  [x] Modo orbita: camara sigue planeta
+  [x] Boton reset view
+  [x] Transiciones suaves (lerp)
+
+CRITERIO DE ACEPTACION:
+  Puedes explorar libremente y 'viajar' a un planeta con transicion fluida.
+
+--------------------------------------------------------------------------------
+FASE 4 — INTERACCION (PASO 5)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 4: Raycasting sobre planetas. Hover resalta planeta y muestra nombre
+   flotante. Click selecciona planeta y muestra panel con datos basicos."
+
+ENTREGABLE:
+  [x] Hover: outline/glow + etiqueta
+  [x] Click: planeta en store global
+  [x] Panel lateral muestra nombre, tamano, distancia, temperatura, curiosidades
+
+CRITERIO DE ACEPTACION:
+  Click en Marte abre su ficha; hover muestra nombre sin click.
+
+--------------------------------------------------------------------------------
+FASE 5 — CONTROLES DE TIEMPO / HUD (PASO 6)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 5: HUD con pausa/play, velocidad de tiempo (x1, x10, x100, x1000),
+   toggle orbitas visibles, toggle etiquetas, indicador de tiempo simulado."
+
+ENTREGABLE:
+  [x] Pausa / reanudar
+  [x] Multiplicador de velocidad
+  [x] Toggles de orbitas y etiquetas
+  [x] Tiempo simulado visible
+
+CRITERIO DE ACEPTACION:
+  Pausar congela orbitas; x100 acelera visiblemente; toggles funcionan.
+
+--------------------------------------------------------------------------------
+FASE 6 — UI EDUCATIVA (PASO 7)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 6: Panel lateral con pestanas — Planeta (dinamico), Sistema Solar,
+   Modelo (simplificaciones), Fisica basica. Todo el contenido en data/ o
+   content/, nada hardcodeado en componentes."
+
+ENTREGABLE:
+  [x] 4 pestanas con contenido educativo
+  [x] Textos en archivos de datos separados
+  [x] Explicacion del modelo y escalas
+
+CRITERIO DE ACEPTACION:
+  Panel educativo completo sin seleccionar planeta; al seleccionar, pestana
+  Planeta se actualiza.
+
+--------------------------------------------------------------------------------
+FASE 7 — PULIDO VISUAL (PASO 8)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 7: Skybox, bloom en el Sol, glow en planetas, anillos de Saturno,
+   estrellas con parallax leve. Usar @react-three/postprocessing."
+
+ENTREGABLE:
+  [x] Skybox o esfera estrellada mejorada
+  [x] Bloom en el Sol
+  [x] Anillos de Saturno
+  [x] Efectos sin sacrificar rendimiento (>30 fps)
+
+CRITERIO DE ACEPTACION:
+  Demo visualmente impresionante; Sol brilla; Saturno tiene anillos.
+
+--------------------------------------------------------------------------------
+FASE 8 — MODO PROFESOR (PASO 9)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 8: Modo explicacion guiada — secuencia Sol, orbitas, planetas uno a
+   uno. Camara y panel sincronizados. Botones Anterior / Siguiente / Salir."
+
+ENTREGABLE:
+  [x] Secuencia automatizada paso a paso
+  [x] Camara se mueve sola a cada punto de interes
+  [x] Panel muestra texto explicativo sincronizado
+
+CRITERIO DE ACEPTACION:
+  Presentacion completa sin tocar el mouse, solo botones del modo profesor.
+
+--------------------------------------------------------------------------------
+FASE 9 — EXTRAS (PASO 10)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 9: Luna (Tierra), Io o Europa (Jupiter), cinturon de asteroides,
+   documentar escalas proporcionales en docs/escalas.md."
+
+ENTREGABLE:
+  [x] Al menos 2 lunas orbitando su planeta
+  [x] Cinturon de asteroides (instanced mesh)
+  [x] docs/escalas.md con formulas
+  [x] Modo Tiempo Real con multiplicadores
+
+CRITERIO DE ACEPTACION:
+  Luna orbita la Tierra; asteroides visibles entre Marte y Jupiter.
+
+--------------------------------------------------------------------------------
+FASE 10 — DOCUMENTACION DE TESIS (PASO 11 — EN PARALELO DESDE FASE 2)
+--------------------------------------------------------------------------------
+PROMPT:
+  "Fase 10: Completa docs/ — arquitectura.md, modelo-fisico.md, escalas.md,
+   manual-usuario.md. README con capturas e instrucciones."
+
+ENTREGABLE:
+  [x] docs/arquitectura.md
+  [x] docs/modelo-fisico.md
+  [x] docs/escalas.md
+  [x] docs/manual-usuario.md
+  [x] README final con demo e instalacion
+
+CRITERIO DE ACEPTACION:
+  Documentacion suficiente para defender el proyecto oralmente.
+
+================================================================================
+  COMO USAR ESTE ARCHIVO
+================================================================================
+
+1. Abre Cursor en esta carpeta.
+2. Di: "Continua con el Paso N" o copia el PROMPT de la fase correspondiente.
+3. Al terminar cada fase, marca los [ ] como [x] manualmente.
+4. No saltes fases.
+
+PROGRESO ACTUAL: Paso 11 (Fase 10) — COMPLETADO | Proyecto listo para tesis
+
+================================================================================
