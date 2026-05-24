@@ -19,14 +19,12 @@ export type CameraMode = 'free' | 'follow'
 export type CameraTransition = 'follow' | 'overview' | 'sun' | null
 export type TimeMode = 'simulated' | 'realTime'
 
-export type HudPanelId = 'camera' | 'time' | 'sidebar' | 'top' | 'teacher'
+export type HudPanelId = 'camera' | 'time' | 'sidebar'
 
 const DEFAULT_HUD_PANELS: Record<HudPanelId, boolean> = {
   camera: true,
   time: true,
   sidebar: true,
-  top: false,
-  teacher: false,
 }
 
 interface AppState {

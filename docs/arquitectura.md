@@ -1,35 +1,45 @@
-# Como esta armado el repo
+# Arquitectura
 
-Notas rapidas para quien quiera tocar el codigo.
+Organización del repositorio y flujo de datos.
 
-## Carpetas
+## Estructura
 
-| Carpeta | Para que sirve |
-|---------|----------------|
-| `data/` | Planetas, lunas, textos del panel, pasos del tour |
-| `simulation/` | Orbitas y reloj (sin Three.js) |
-| `scene/` | Meshes, luces, efectos |
-| `camera/` | OrbitControls y seguir planetas |
-| `ui/` | HUD, sidebar, tour guiado |
-| `store/` | Zustand (estado global) |
+| Carpeta | Responsabilidad |
+|---------|-----------------|
+| `src/data/` | Planetas, lunas, escalas, contenido educativo |
+| `src/simulation/` | Órbitas y reloj (sin dependencia de Three.js) |
+| `src/scene/` | Meshes, luces, efectos, cinturón de asteroides |
+| `src/camera/` | OrbitControls, seguimiento y secuencias de viaje |
+| `src/ui/` | HUD, panel Info, tour, overlays |
+| `src/store/` | Estado global (Zustand) |
+| `src/hooks/` | Reloj de simulación y tiempo simulado |
 
-## Flujo del tiempo → posicion
+## Flujo tiempo → posición
 
 ```
 SimulationClock
   → elapsedDays
   → simulation/orbit.ts
-  → posicion + rotacion
+  → posición + rotación
   → Planet.tsx / Moon.tsx
 ```
 
-La simulacion no importa Three.js; solo devuelve numeros.
+La capa de simulación devuelve coordenadas numéricas; la escena solo las renderiza.
 
-## Archivos que mas vas a tocar
+## Escalas
 
-- `data/planets.ts` — datos de planetas
-- `simulation/orbit.ts` — matematica orbital
+Toda la lógica de distancia y tamaño está centralizada en `src/data/scales.ts`. Los componentes 3D consultan `getPlanetOrbitRadiusById()` y `getPlanetSceneRadiusById()` en lugar de constantes duplicadas.
+
+## Archivos clave
+
+- `data/planets.ts` — catálogo de planetas
+- `data/scales.ts` — fórmulas de escena
+- `simulation/orbit.ts` — cinemática circular
 - `simulation/realTime.ts` — modo Tiempo Real
-- `hooks/useSimulationClock.ts` — reloj
-- `scene/usePlanetSurfaceMaterial.ts` — barra de brillo (cara oscura)
-- `store/useAppStore.ts` — estado de UI y camara
+- `hooks/useSimulationClock.ts` — reloj global
+- `store/useAppStore.ts` — UI, cámara, tour
+- `scene/usePlanetSurfaceMaterial.ts` — shader de brillo en planetas
+
+## Despliegue
+
+GitHub Pages vía `.github/workflows/deploy-pages.yml`, con `base: '/SolarSystem/'` en Vite.

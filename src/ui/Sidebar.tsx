@@ -8,12 +8,12 @@ export function Sidebar() {
   return (
     <aside className="sidebar">
       <header className="sidebar__header">
-        <p className="sidebar__eyebrow">Side project · Three.js</p>
+        <p className="sidebar__eyebrow">Proyecto personal · WebGL</p>
         <h1 className="sidebar__title">Sistema Solar</h1>
         <p className="sidebar__subtitle">
           {phase === 'teacher'
-            ? 'Tour activo — Anterior / Siguiente para moverte.'
-            : 'Mueve la camara, clickea planetas y sube la velocidad si te aburres.'}
+            ? 'Tour activo — usa los controles superiores para avanzar.'
+            : 'Exploración 3D del Sistema Solar con órbitas, cámara libre y control temporal.'}
         </p>
       </header>
 

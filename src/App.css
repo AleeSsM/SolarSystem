@@ -91,12 +91,11 @@
 }
 
 .hud-stack--left {
-  top: 1rem;
+  top: 3.85rem;
   left: 1rem;
-  width: min(280px, calc(100% - 2rem));
-  max-height: min(78vh, 680px);
-  overflow-y: auto;
-  scrollbar-width: thin;
+  width: min(280px, calc(100% - 22rem));
+  overflow: visible;
+  max-height: none;
 }
 
 .hud-stack--left .hud-panel,
@@ -108,36 +107,29 @@
 
 .hud-stack--left .hud-panel {
   max-height: none;
+  overflow: visible;
 }
 
 .hud-stack--left .hud-tab {
   align-self: flex-start;
 }
 
-.hud-stack--top-right {
-  top: 1rem;
-  right: 1rem;
-  left: auto;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-end;
-  width: auto;
-  max-width: calc(100% - 2rem);
+.hud-panel--fit {
   max-height: none;
   overflow: visible;
-  gap: 0.5rem;
 }
 
-.hud-stack--top-right .hud-panel,
-.hud-stack--top-right .hud-tab {
-  position: static;
-  transform: none;
-  flex-shrink: 0;
+.hud-panel--fit .hud-panel__body {
+  overflow: visible;
 }
 
-.hud-stack--top-right .hud-panel {
-  width: min(300px, calc(50vw - 1.25rem));
-  max-height: min(72vh, 560px);
+.hud-panel--info {
+  top: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  width: min(340px, 36vw);
+  max-height: none;
+  height: auto;
 }
 
 .hud-panel--info .hud-panel__body {
@@ -162,9 +154,85 @@
   min-height: 0;
 }
 
-.hud-panel--top {
-  width: auto;
-  max-width: min(280px, calc(50vw - 1.25rem));
+.hud-tab--info {
+  top: 1rem;
+  right: 1rem;
+}
+
+.top-actions {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 12;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: min(560px, calc(100% - 22rem));
+}
+
+.top-actions--tour {
+  max-width: min(640px, calc(100% - 2rem));
+}
+
+.top-actions__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffc866;
+  padding: 0 0.25rem;
+}
+
+.top-actions__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--hud-border);
+  background: var(--hud-bg);
+  backdrop-filter: blur(12px);
+  color: #c8d4ff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.top-actions__btn:hover:not(:disabled) {
+  background: rgba(6, 6, 18, 0.68);
+  border-color: rgba(139, 156, 255, 0.55);
+  color: #eef2ff;
+}
+
+.top-actions__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.top-actions__btn--tour {
+  border-color: rgba(255, 200, 100, 0.45);
+  background: rgba(255, 180, 60, 0.12);
+  color: #ffe8b8;
+}
+
+.top-actions__btn--tour:hover:not(:disabled) {
+  background: rgba(255, 180, 60, 0.22);
+  border-color: rgba(255, 200, 100, 0.65);
+}
+
+.top-actions__btn--primary {
+  border-color: rgba(255, 200, 100, 0.45);
+  color: #ffe8b8;
+}
+
+.top-actions__btn--exit {
+  border-color: rgba(255, 120, 100, 0.35);
+  color: #ffb8a8;
 }
 
 .hud-tab {
@@ -1317,27 +1385,25 @@
 }
 
 @media (max-width: 900px) {
-  .hud-panel {
-    width: min(calc(100vw - 1.25rem), 100%);
-    max-height: min(52vh, 440px);
+  .top-actions {
+    left: 0.65rem;
+    right: 0.65rem;
+    max-width: none;
+  }
+
+  .hud-panel--info {
+    width: min(320px, calc(100vw - 1.25rem));
+  }
+
+  .hud-panel--fit,
+  .hud-panel--info {
+    max-height: none;
   }
 
   .hud-stack--left {
-    top: 0.65rem;
+    top: 4.5rem;
     left: 0.65rem;
     width: min(260px, calc(100% - 1.25rem));
-    max-height: min(70vh, 560px);
-  }
-
-  .hud-stack--top-right {
-    top: 0.65rem;
-    right: 0.65rem;
-    flex-wrap: wrap;
-    max-width: calc(100% - 1.25rem);
-  }
-
-  .hud-stack--top-right .hud-panel {
-    width: min(280px, calc(100vw - 1.25rem));
   }
 
   .sim-hud__speed-btn {
@@ -1360,14 +1426,14 @@
     width: min(240px, calc(100% - 1.25rem));
   }
 
-  .hud-stack--top-right {
-    flex-direction: column;
-    align-items: flex-end;
+  .hud-panel--info {
+    width: calc(100vw - 1.25rem);
   }
 
   .camera-hud__btn,
-  .sim-hud__btn {
+  .sim-hud__btn,
+  .top-actions__btn {
     font-size: 0.72rem;
-    padding: 0.38rem 0.45rem;
+    padding: 0.38rem 0.65rem;
   }
 }

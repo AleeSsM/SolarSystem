@@ -1,30 +1,50 @@
-# Que tan real es el modelo
+# Modelo físico
 
-Spoiler: es un dibujo animado con reglas, no un planetario profesional.
+Supuestos y limitaciones de la simulación.
 
 ## Orbitas
 
-Circulos (no elipses) con inclinacion leve. El angulo avanza asi:
+Trayectorias **circulares** (no elípticas) con inclinación configurable por planeta:
 
 ```
 θ = (t / T) × 2π + φ
 ```
 
-`t` = dias simulados, `T` = periodo del planeta, `φ` = fase inicial.
+- `t` — días simulados transcurridos  
+- `T` — periodo orbital del cuerpo  
+- `φ` — fase inicial  
+
+Los periodos provienen de tablas públicas (NASA/JPL).
 
 ## Tiempo
 
-- **x1** = un dia simulado es un dia real
-- **x100k … x100M** = multiplicadores encima de eso
-- **Tiempo Real** = ancla a la fecha actual y puedes acelerar desde ahi
+| Modo | Comportamiento |
+|------|----------------|
+| x1 | 1 día simulado = 1 día real |
+| x100k … x1000M | Multiplicador sobre el reloj base |
+| Tiempo Real | Ancla a la fecha actual del sistema |
 
-Las posiciones en Tiempo Real son aproximadas (orbitas circulares + longitudes medias simplificadas). Se ve bien, pero no sustituye a JPL Horizons.
+En Tiempo Real las posiciones son **aproximadas** (órbitas circulares, fases simplificadas). Adecuado para visualización, no para ephemerides de precisión.
+
+## Escala espacial
+
+Distancia orbital y radio de cuerpos usan curvas distintas (ver `docs/escalas.md`). No es posible representar simultáneamente:
+
+1. Distancias reales en UA  
+2. Diámetros reales en km  
+3. Visibilidad cómoda en pantalla  
+
+El proyecto prioriza (3) manteniendo orden orbital y periodos correctos.
 
 ## Lunas y asteroides
 
-- Luna e Io orbitan a su planeta en un circulo local
-- Asteroides: instanced mesh entre ~2.2 y 3.2 UA, comprimidos como el resto
+- **Luna e Io:** órbita circular local alrededor del planeta padre  
+- **Asteroides:** `InstancedMesh` entre 2.15 y 3.25 UA; periodos `T ∝ AU^1.5`
 
-## Brillo planetas
+## Iluminación
 
-La barra suma luz solo en la cara que no mira al Sol (shader custom). La iluminacion del Sol no se toca.
+Luz puntual en el Sol. La barra **Brillo planetas** aclara la hemisferio no iluminado mediante shader personalizado, sin alterar la intensidad de la luz solar.
+
+## Modo helicoidal
+
+El sistema avanza en línea recta mientras los planetas mantienen movimiento orbital en el plano XY, generando estelas helicoidales para visualizar el movimiento compuesto.

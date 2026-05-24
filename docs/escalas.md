@@ -1,58 +1,74 @@
 # Escalas del modelo
 
-El Sistema Solar real no puede mostrarse a escala simultanea en distancia y tamano.
+El Sistema Solar real no puede mostrarse a escala simultánea en **distancia** y **tamaño** dentro de una ventana de navegador. Este proyecto usa una **escala única equilibrada**: distancias comprimidas, planetas visibles y un Sol acotado.
+
+Implementación: `src/data/scales.ts`.
 
 ## Distancias (UA → escena)
 
-Formula en `data/scales.ts`:
-
 ```
-orbitRadius = 12 + AU^0.65 × 10
+orbitRadius = 14 + AU^0.8 × 9.2
 ```
 
-| Planeta | UA real | Radio orbital (escena) |
-|---------|---------|------------------------|
-| Mercurio | 0.39 | ~17 |
-| Tierra | 1.0 | 22 |
-| Marte | 1.52 | ~25 |
-| Jupiter | 5.2 | ~42 |
-| Neptuno | 30.1 | ~124 |
+| Planeta | UA | Radio orbital (u) |
+|---------|-----|-------------------|
+| Mercurio | 0.387 | ~18.0 |
+| Venus | 0.723 | ~20.7 |
+| Tierra | 1.000 | ~23.2 |
+| Marte | 1.524 | ~26.8 |
+| Júpiter | 5.204 | ~51.3 |
+| Saturno | 9.583 | ~72.4 |
+| Urano | 19.201 | ~107.8 |
+| Neptuno | 30.047 | ~138.2 |
 
-Compresion potencial (exponente 0.65): Neptuno queda visible sin perder separacion interior.
+El exponente `0.8` comprime el espacio exterior para que Neptuno siga siendo visible sin perder el orden Mercurio → Neptuno.
 
-## Tamanos planetarios
+## Tamaños planetarios
 
-Exagerados respecto a distancia. Tierra = 0.55 unidades. Jupiter ~11× mas grande que Tierra en la realidad, aqui ~2.5× visual para que se distinga desde lejos.
+Referencia: Tierra = `EARTH_SCENE_RADIUS` (0.38 u).
+
+Los demás planetas usan ratios lineales respecto a la Tierra (datos NASA):
+
+| Planeta | Ratio vs Tierra | Radio (u) |
+|---------|-----------------|-----------|
+| Mercurio | 0.383 | ~0.15 |
+| Venus | 0.949 | ~0.36 |
+| Tierra | 1.000 | 0.38 |
+| Marte | 0.532 | ~0.20 |
+| Júpiter | 11.21 | ~4.26 |
+| Saturno | 9.45 | ~3.59 |
+| Urano | 4.01 | ~1.52 |
+| Neptuno | 3.88 | ~1.47 |
+
+**Importante:** distancia orbital y radio del planeta se escalan de forma **independiente**. No existe un factor único que convierta UA en unidades de pantalla y también tamaños reales.
+
+## El Sol
+
+```
+idealSun = earthRadius × 109.1
+orbitCap = mercuryOrbit × 0.36
+jupiterFloor = jupiterRadius × 1.14
+sunRadius = max(jupiterFloor, min(idealSun, orbitCap)) × SUN_SIZE_BOOST
+```
+
+Con `SUN_SIZE_BOOST = 1`, el Sol queda visible pero limitado para no cubrir Mercurio y Venus.
 
 ## Tiempo
 
-- **x1** = velocidad real: 1 dia simulado = 1 dia real (86 400 s)
-- **x100k / x1M / x10M / x100M** = multiplicadores sobre esa base
-- Tierra completa una orbita en ~365 dias simulados a x1
-- Mercurio (~88 dias) orbita ~4× mas rapido que la Tierra; Neptuno (~60 189 dias) mucho mas lento — usa x1M o x10M para apreciar su movimiento
-- **Tiempo Real** (boton dedicado): alinea posiciones con la fecha/hora actual del sistema
+- **x1** — un día simulado = un día real
+- **x100k … x1000M** — multiplicadores sobre esa base
+- **Tiempo Real** — ancla posiciones a la fecha/hora del sistema
 
-## Velocidades orbitales
-
-Los periodos son datos NASA reales. La velocidad angular es `2π / periodo`, por eso Mercurio se mueve mucho mas rapido que Jupiter.
+Velocidad angular: `ω = 2π / periodo`. Mercurio (~88 d) orbita mucho más rápido que Neptuno (~60 189 d).
 
 ## Lunas
 
-| Luna | Padre | Radio (escena) | Orbita local | Periodo |
-|------|-------|----------------|--------------|---------|
-| Luna | Tierra | 0.15 | 1.2 | 27.32 dias |
-| Io | Jupiter | 0.22 | 2.2 | 1.77 dias |
+Radios locales proporcionales al planeta padre (`MOON_TO_PARENT_RATIO`). Órbitas locales exageradas para visibilidad.
 
-Radios y distancias locales exagerados para visibilidad desde la camara general.
+## Cinturón de asteroides
 
-## Cinturon de asteroides
-
-Entre 2.2 y 3.2 UA reales (~28–35 unidades de escena tras compresion). ~350 instancias con `InstancedMesh`; tamanos 0.04–0.12 unidades.
-
-## Modo Tiempo Real
-
-Cuando esta activo, el tiempo simulado = dias desde J2000.0 hasta ahora. Ver `docs/modelo-fisico.md`.
+Entre 2.15 y 3.25 UA (~28–36 u en escena). Instancias con `InstancedMesh`; periodos según la ley de Kepler simplificada `T ∝ AU^1.5`.
 
 ## Texturas
 
-Planetas: Stellarium (CC). Sol: Solar System Scope via homer-jay/solar-system-textures (CC BY 4.0). Tierra: three.js examples.
+Planetas: Stellarium (CC). Sol: Solar System Scope vía homer-jay/solar-system-textures (CC BY 4.0).

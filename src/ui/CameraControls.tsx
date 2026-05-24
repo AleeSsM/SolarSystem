@@ -24,7 +24,7 @@ export function CameraControls() {
   const showZoomSlider = cameraMode === 'follow' && (followPlanetId || selectedPlanetId)
 
   return (
-    <HudPanel id="camera" title="Cámara" className="hud-panel--camera" tabClassName="hud-tab--camera">
+    <HudPanel id="camera" title="Cámara" className="hud-panel--fit" tabClassName="hud-tab--camera">
       <div className="camera-hud camera-hud--embedded">
         <div className="camera-hud__row">
           <button
