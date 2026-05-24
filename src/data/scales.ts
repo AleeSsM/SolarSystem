@@ -8,8 +8,8 @@ export const EARTH_SCENE_RADIUS = 0.38
 /** Mercurio: primera orbita al doble de distancia al Sol. */
 export const MERCURY_ORBIT_BOOST = 2
 
-/** Sol al doble del radio equilibrado. */
-export const SUN_SIZE_BOOST = 2
+/** Sol al 1.5× del radio equilibrado (75 % del boost anterior). */
+export const SUN_SIZE_BOOST = 1.5
 
 export const PLANET_SIZE = {
   mercury: 0.383,

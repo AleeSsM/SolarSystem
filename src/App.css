@@ -1,6 +1,6 @@
 .app-layout {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 340px;
   width: 100vw;
   height: 100vh;
   background: #030014;
@@ -76,11 +76,6 @@
   min-height: 0;
 }
 
-.hud-panel--camera {
-  top: 1rem;
-  left: 1rem;
-}
-
 .hud-panel--time {
   bottom: 1rem;
   left: 1rem;
@@ -90,15 +85,44 @@
   top: 1rem;
   right: 1rem;
   width: auto;
-  max-width: min(calc(100vw - 2rem), 420px);
+  max-width: min(320px, calc(100% - 2rem));
 }
 
-.hud-panel--teacher {
+.hud-stack {
+  position: absolute;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  pointer-events: none;
+}
+
+.hud-stack > * {
+  pointer-events: auto;
+}
+
+.hud-stack--left {
   top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: auto;
-  max-width: min(calc(100vw - 2rem), 360px);
+  left: 1rem;
+  width: min(280px, calc(100% - 2rem));
+  max-height: min(42vh, 360px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.hud-stack--left .hud-panel,
+.hud-stack--left .hud-tab {
+  position: static;
+  width: 100%;
+  transform: none;
+}
+
+.hud-stack--left .hud-panel {
+  max-height: none;
+}
+
+.hud-stack--left .hud-tab {
+  align-self: flex-start;
 }
 
 .hud-panel--sidebar {
@@ -152,11 +176,6 @@
   color: #eef2ff;
 }
 
-.hud-tab--camera {
-  top: 1rem;
-  left: 1rem;
-}
-
 .hud-tab--time {
   bottom: 1rem;
   left: 1rem;
@@ -165,12 +184,6 @@
 .hud-tab--top {
   top: 1rem;
   right: 1rem;
-}
-
-.hud-tab--teacher {
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .hud-tab--sidebar {
@@ -254,19 +267,11 @@
 }
 
 .camera-hud {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 10;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 0.75rem;
-  border-radius: 12px;
-  background: rgba(6, 6, 18, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  min-width: 220px;
+  min-width: 0;
+  width: 100%;
 }
 
 .camera-hud__row {
@@ -717,19 +722,11 @@
 }
 
 .sim-hud {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 10;
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
-  padding: 0.75rem;
-  border-radius: 12px;
-  background: rgba(6, 6, 18, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  min-width: 240px;
+  min-width: 0;
+  width: 100%;
 }
 
 .sim-hud__title {
@@ -1021,18 +1018,15 @@
 }
 
 .teacher-hud {
-  position: absolute;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 0.45rem;
+  width: 100%;
 }
 
 .teacher-hud__start {
+  width: 100%;
   padding: 0.5rem 1rem;
   border-radius: 999px;
   border: 1px solid rgba(255, 200, 100, 0.45);
@@ -1334,38 +1328,28 @@
 
   .hud-panel {
     width: min(calc(100vw - 1.25rem), 100%);
-    max-height: min(55vh, 480px);
+    max-height: min(48vh, 420px);
   }
 
-  .hud-panel--camera {
+  .hud-stack--left {
     top: 0.65rem;
     left: 0.65rem;
-    right: auto;
+    width: min(260px, calc(100% - 1.25rem));
+    max-height: min(38vh, 320px);
   }
 
   .hud-panel--time {
     bottom: 0.65rem;
     left: 0.65rem;
     right: auto;
+    max-width: min(calc(100vw - 1.25rem), 100%);
   }
 
   .hud-panel--top {
     top: 0.65rem;
     right: 0.65rem;
     left: auto;
-    max-width: calc(100vw - 1.25rem);
-  }
-
-  .hud-panel--teacher {
-    top: 3.35rem;
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: calc(100vw - 1.25rem);
-  }
-
-  .hud-tab--camera {
-    top: 0.65rem;
-    left: 0.65rem;
+    max-width: min(calc(100vw - 1.25rem), 280px);
   }
 
   .hud-tab--time {
@@ -1376,12 +1360,6 @@
   .hud-tab--top {
     top: 0.65rem;
     right: 0.65rem;
-  }
-
-  .hud-tab--teacher {
-    top: 3.35rem;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
   .hud-tab--sidebar {
@@ -1399,14 +1377,6 @@
     height: min(52vh, 420px);
     margin: 0;
     border-radius: 14px 14px 0 0;
-  }
-
-  .camera-hud {
-    min-width: 0;
-  }
-
-  .sim-hud {
-    min-width: 0;
   }
 
   .sim-hud__speed-btn {
@@ -1431,17 +1401,18 @@
     padding: 0.5rem;
   }
 
+  .hud-stack--left {
+    width: min(240px, calc(100% - 1.25rem));
+  }
+
+  .hud-panel--time {
+    max-height: min(44vh, 380px);
+  }
+
   .camera-hud__btn,
   .sim-hud__btn {
     font-size: 0.72rem;
     padding: 0.38rem 0.45rem;
-  }
-
-  .hud-panel--teacher,
-  .hud-tab--teacher {
-    top: auto;
-    bottom: 3.6rem;
-    transform: translateX(-50%);
   }
 
   .hud-tab--sidebar {

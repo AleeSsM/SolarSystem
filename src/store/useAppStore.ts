@@ -25,8 +25,8 @@ const DEFAULT_HUD_PANELS: Record<HudPanelId, boolean> = {
   camera: true,
   time: true,
   sidebar: true,
-  top: true,
-  teacher: true,
+  top: false,
+  teacher: false,
 }
 
 interface AppState {

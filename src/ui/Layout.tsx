@@ -29,9 +29,11 @@ export function Layout() {
         </HudPanel>
         <IntroOverlay />
         <TravelOverlay />
-        <CameraControls />
+        <div className="hud-stack hud-stack--left">
+          <CameraControls />
+          <TeacherModeControls />
+        </div>
         <SimulationControls />
-        <TeacherModeControls />
         {!introActive && !sidebarOpen && (
           <button
             type="button"
