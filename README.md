@@ -14,6 +14,21 @@ Simulación interactiva del Sistema Solar construida con React, Three.js y React
 - Tour guiado de 12 paradas
 - Modo helicoidal con estelas de movimiento
 - Panel informativo con datos por planeta y notas del modelo
+- Música ambiente (tema de *Interstellar*, archivo local en `public/audio/`)
+- Modo rendimiento (menos asteroides, sin bloom) con detección automática en móvil
+- Barra de carga de texturas, tabla «distancia real vs escena» y «Hoy en el cielo» (estimación educativa)
+- Atajos de teclado y enlaces profundos: `?planet=mars`, `?sound=1`, `?performance=1`
+
+### Atajos
+
+| Tecla | Acción |
+|-------|--------|
+| Espacio | Pausa / play |
+| R | Vista sistema |
+| H | Modo helicoidal |
+| M | Música on/off |
+| P | Modo rendimiento |
+| ? | Mostrar / ocultar atajos |
 
 ## Inicio rápido
 
@@ -61,6 +76,10 @@ npm run build    # build de producción
 npm run preview  # vista previa del build
 npm run lint     # ESLint
 ```
+
+### Analytics (opcional)
+
+Copia `.env.example` a `.env` y define `VITE_PLAUSIBLE_DOMAIN` si usas [Plausible](https://plausible.io/).
 
 ## Créditos
 

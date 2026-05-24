@@ -20,6 +20,10 @@ export function SimulationControls() {
   const introActive = useAppStore((s) => s.introActive)
   const simulatedDays = useSimulatedTime()
   const isRealTime = timeMode === 'realTime'
+  const performanceMode = useAppStore((s) => s.performanceMode)
+  const togglePerformanceMode = useAppStore((s) => s.togglePerformanceMode)
+  const scaleCompareOpen = useAppStore((s) => s.scaleCompareOpen)
+  const setScaleCompareOpen = useAppStore((s) => s.setScaleCompareOpen)
 
   if (introActive) return null
 
@@ -105,6 +109,14 @@ export function SimulationControls() {
           <label className="sim-hud__toggle">
             <input type="checkbox" checked={showLabels} onChange={toggleLabels} />
             Etiquetas
+          </label>
+          <label className="sim-hud__toggle">
+            <input type="checkbox" checked={performanceMode} onChange={togglePerformanceMode} />
+            Modo rendimiento
+          </label>
+          <label className="sim-hud__toggle">
+            <input type="checkbox" checked={scaleCompareOpen} onChange={() => setScaleCompareOpen(!scaleCompareOpen)} />
+            Comparar escala
           </label>
         </div>
       </div>

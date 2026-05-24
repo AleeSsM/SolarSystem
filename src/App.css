@@ -1384,7 +1384,319 @@
   color: rgba(232, 234, 246, 0.45);
 }
 
+/* —— Carga, audio, escala, cielo, atajos —— */
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, rgba(8, 6, 24, 0.92), rgba(2, 2, 8, 0.98));
+  pointer-events: all;
+}
+
+.loading-overlay__card {
+  width: min(320px, calc(100vw - 2rem));
+  padding: 1.25rem 1.5rem;
+  border-radius: 14px;
+  border: 1px solid var(--hud-border);
+  background: var(--hud-bg);
+  backdrop-filter: blur(16px);
+  text-align: center;
+}
+
+.loading-overlay__title {
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e8eaf6;
+  letter-spacing: 0.04em;
+}
+
+.loading-overlay__bar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.loading-overlay__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6b7cff, #a8b4ff);
+  transition: width 0.2s ease;
+}
+
+.loading-overlay__pct {
+  margin: 0.55rem 0 0;
+  font-size: 0.78rem;
+  color: rgba(232, 234, 246, 0.55);
+}
+
+.top-actions__btn--sound {
+  border-color: rgba(120, 180, 255, 0.4);
+  color: #b8d4ff;
+}
+
+.top-actions__btn--sound-on {
+  border-color: rgba(140, 200, 255, 0.65);
+  background: rgba(80, 140, 255, 0.18);
+  color: #e8f4ff;
+}
+
+.scale-compare-tab {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 14;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--hud-border);
+  background: var(--hud-bg);
+  backdrop-filter: blur(12px);
+  color: #c8d4ff;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.scale-compare-tab:hover {
+  border-color: rgba(139, 156, 255, 0.55);
+  color: #eef2ff;
+}
+
+.scale-compare {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 14;
+  width: min(520px, calc(100vw - 1.5rem));
+  max-height: min(42vh, 360px);
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--hud-border);
+  background: var(--hud-bg);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.scale-compare__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.scale-compare__title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #e8eaf6;
+}
+
+.scale-compare__hide {
+  border: none;
+  background: transparent;
+  color: rgba(232, 234, 246, 0.6);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.15rem 0.35rem;
+}
+
+.scale-compare__intro {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  color: rgba(232, 234, 246, 0.55);
+  line-height: 1.4;
+}
+
+.scale-compare__table-wrap {
+  overflow: auto;
+  flex: 1;
+}
+
+.scale-compare__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+}
+
+.scale-compare__table th,
+.scale-compare__table td {
+  padding: 0.35rem 0.4rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scale-compare__table th {
+  color: rgba(200, 212, 255, 0.75);
+  font-weight: 600;
+}
+
+.scale-compare__table td {
+  color: rgba(232, 234, 246, 0.78);
+}
+
+.keyboard-hints {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 15;
+  width: min(240px, calc(100vw - 2rem));
+  padding: 0.75rem 0.9rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--hud-border);
+  background: var(--hud-bg);
+  backdrop-filter: blur(14px);
+}
+
+.keyboard-hints__close {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.45rem;
+  border: none;
+  background: transparent;
+  color: rgba(232, 234, 246, 0.55);
+  font-size: 1.15rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.keyboard-hints__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #e8eaf6;
+}
+
+.keyboard-hints__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: rgba(232, 234, 246, 0.75);
+}
+
+.keyboard-hints__list kbd {
+  display: inline-block;
+  min-width: 1.6rem;
+  margin-right: 0.35rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.35);
+  font-size: 0.68rem;
+  font-family: inherit;
+  text-align: center;
+}
+
+.sky-tonight {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.sky-tonight__heading {
+  margin: 0 0 0.35rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #e8eaf6;
+}
+
+.sky-tonight__intro,
+.sky-tonight__summary {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: rgba(232, 234, 246, 0.58);
+}
+
+.sky-tonight__summary {
+  color: rgba(200, 220, 255, 0.82);
+}
+
+.sky-tonight__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sky-tonight__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.sky-tonight__name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8eaf6;
+}
+
+.sky-tonight__badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sky-tonight__badge--great {
+  background: rgba(80, 200, 140, 0.2);
+  color: #9ef0c4;
+}
+
+.sky-tonight__badge--ok {
+  background: rgba(100, 160, 255, 0.2);
+  color: #b8d4ff;
+}
+
+.sky-tonight__badge--low {
+  background: rgba(255, 180, 80, 0.15);
+  color: #ffd8a0;
+}
+
+.sky-tonight__badge--sun {
+  background: rgba(255, 220, 100, 0.15);
+  color: #ffe8a0;
+}
+
+.sky-tonight__note {
+  margin: 0.2rem 0 0;
+  font-size: 0.68rem;
+  color: rgba(232, 234, 246, 0.5);
+  line-height: 1.35;
+}
+
 @media (max-width: 900px) {
+  .scale-compare,
+  .scale-compare-tab {
+    bottom: 0.65rem;
+  }
+
+  .keyboard-hints {
+    right: 0.65rem;
+    bottom: 0.65rem;
+  }
+
   .top-actions {
     left: 0.65rem;
     right: 0.65rem;

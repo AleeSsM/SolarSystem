@@ -12,6 +12,8 @@ export function TopActionBar() {
   const exitTeacherMode = useAppStore((s) => s.exitTeacherMode)
   const nextTeacherStep = useAppStore((s) => s.nextTeacherStep)
   const prevTeacherStep = useAppStore((s) => s.prevTeacherStep)
+  const soundOn = useAppStore((s) => s.soundOn)
+  const toggleSound = useAppStore((s) => s.toggleSound)
 
   if (introActive || travelActive) return null
 
@@ -53,6 +55,15 @@ export function TopActionBar() {
         Tour guiado
       </button>
       <HelicalMotionHud />
+      <button
+        type="button"
+        className={`top-actions__btn top-actions__btn--sound ${soundOn ? 'top-actions__btn--sound-on' : ''}`}
+        onClick={toggleSound}
+        title="Musica ambiente (Interstellar)"
+        aria-pressed={soundOn}
+      >
+        {soundOn ? 'Musica ON' : 'Musica'}
+      </button>
       <SourceLinkHud />
     </div>
   )

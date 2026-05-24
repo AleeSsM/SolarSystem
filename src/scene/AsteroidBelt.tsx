@@ -3,10 +3,16 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { auToOrbitRadius } from '../data/scales'
 import { getElapsedDays } from '../hooks/useSimulationClock'
+import {
+  ASTEROID_COUNT_DEFAULT,
+  ASTEROID_COUNT_PERFORMANCE,
+  DUST_COUNT_DEFAULT,
+  DUST_COUNT_PERFORMANCE,
+} from '../lib/performance'
+import { useAppStore } from '../store/useAppStore'
 import { EARTH_ORBIT_DAYS } from '../simulation/constants'
 import { computeOrbitAngle, computeRotation } from '../simulation/orbit'
 
-const ASTEROID_COUNT = 520
 const INNER_AU = 2.15
 const OUTER_AU = 3.25
 
@@ -22,12 +28,16 @@ function beltOrbitalPeriodDays(au: number) {
 }
 
 export function AsteroidBelt() {
+  const performanceMode = useAppStore((s) => s.performanceMode)
+  const asteroidCount = performanceMode ? ASTEROID_COUNT_PERFORMANCE : ASTEROID_COUNT_DEFAULT
+  const dustCount = performanceMode ? DUST_COUNT_PERFORMANCE : DUST_COUNT_DEFAULT
+
   const meshRef = useRef<THREE.InstancedMesh>(null)
   const dustRef = useRef<THREE.InstancedMesh>(null)
   const dummy = useRef(new THREE.Object3D())
 
   const seeds = useMemo(() => {
-    return Array.from({ length: ASTEROID_COUNT }, (_, i) => {
+    return Array.from({ length: asteroidCount }, (_, i) => {
       const au = INNER_AU + rng(i, 1) * (OUTER_AU - INNER_AU)
       const angle = rng(i, 2) * Math.PI * 2
       const y = (rng(i, 3) - 0.5) * 1.8
@@ -46,10 +56,10 @@ export function AsteroidBelt() {
         spinRateDays,
       }
     })
-  }, [])
+  }, [asteroidCount])
 
   const dustSeeds = useMemo(() => {
-    return Array.from({ length: 120 }, (_, i) => {
+    return Array.from({ length: dustCount }, (_, i) => {
       const au = INNER_AU + rng(i + 500, 1) * (OUTER_AU - INNER_AU)
       return {
         au,
@@ -59,7 +69,7 @@ export function AsteroidBelt() {
         orbitalPeriodDays: beltOrbitalPeriodDays(au),
       }
     })
-  }, [])
+  }, [dustCount])
 
   useLayoutEffect(() => {
     const mesh = meshRef.current
@@ -118,11 +128,12 @@ export function AsteroidBelt() {
   const innerR = auToOrbitRadius(INNER_AU)
   const outerR = auToOrbitRadius(OUTER_AU)
   const midR = (innerR + outerR) / 2
+  const ringSegments = performanceMode ? 64 : 128
 
   return (
-    <group name="asteroid-belt">
+    <group name="asteroid-belt" key={`belt-${asteroidCount}`}>
       <mesh rotation={[Math.PI / 2, 0, 0]} renderOrder={0}>
-        <ringGeometry args={[innerR * 0.98, outerR * 1.02, 128]} />
+        <ringGeometry args={[innerR * 0.98, outerR * 1.02, ringSegments]} />
         <meshBasicMaterial
           color="#6a5a48"
           transparent
@@ -133,7 +144,7 @@ export function AsteroidBelt() {
         />
       </mesh>
 
-      <instancedMesh ref={meshRef} args={[undefined, undefined, ASTEROID_COUNT]} frustumCulled={false}>
+      <instancedMesh ref={meshRef} args={[undefined, undefined, asteroidCount]} frustumCulled={false}>
         <dodecahedronGeometry args={[1, 0]} />
         <meshStandardMaterial
           vertexColors
@@ -144,8 +155,8 @@ export function AsteroidBelt() {
         />
       </instancedMesh>
 
-      <instancedMesh ref={dustRef} args={[undefined, undefined, 120]} frustumCulled={false}>
-        <sphereGeometry args={[1, 6, 6]} />
+      <instancedMesh ref={dustRef} args={[undefined, undefined, dustCount]} frustumCulled={false}>
+        <sphereGeometry args={[1, performanceMode ? 4 : 6, performanceMode ? 4 : 6]} />
         <meshBasicMaterial
           color="#c4b098"
           transparent
@@ -155,16 +166,18 @@ export function AsteroidBelt() {
         />
       </instancedMesh>
 
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[midR, (outerR - innerR) * 0.45, 8, 96]} />
-        <meshBasicMaterial
-          color="#8a7a60"
-          transparent
-          opacity={0.04}
-          side={THREE.DoubleSide}
-          depthWrite={false}
-        />
-      </mesh>
+      {!performanceMode && (
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[midR, (outerR - innerR) * 0.45, 8, 96]} />
+          <meshBasicMaterial
+            color="#8a7a60"
+            transparent
+            opacity={0.04}
+            side={THREE.DoubleSide}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
     </group>
   )
 }

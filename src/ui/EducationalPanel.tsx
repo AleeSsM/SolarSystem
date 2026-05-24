@@ -8,6 +8,7 @@ import {
 import type { EducationalTabId } from '../data/content/types'
 import { useAppStore } from '../store/useAppStore'
 import { PlanetTabContent } from './PlanetTabContent'
+import { SkyTonightCard } from './SkyTonightCard'
 import { TabContentView } from './TabContentView'
 
 const TAB_ITEMS: { id: EducationalTabId; label: string }[] = [
@@ -57,7 +58,12 @@ export function EducationalPanel() {
           ) : (
             <PlanetTabContent />
           ))}
-        {activeTab === 'system' && <TabContentView content={solarSystemContent} />}
+        {activeTab === 'system' && (
+          <>
+            <SkyTonightCard />
+            <TabContentView content={solarSystemContent} />
+          </>
+        )}
         {activeTab === 'model' && <TabContentView content={modelContent} />}
         {activeTab === 'physics' && <TabContentView content={physicsContent} />}
       </Box>

@@ -3,6 +3,9 @@ import { useAppStore } from '../store/useAppStore'
 
 export function PostEffects() {
   const helicalMotion = useAppStore((s) => s.helicalMotion)
+  const performanceMode = useAppStore((s) => s.performanceMode)
+
+  if (performanceMode) return null
 
   return (
     <EffectComposer multisampling={0}>

@@ -13,6 +13,8 @@ import {
   getTeacherStep,
   type TeacherStep,
 } from '../data/content/teacherMode'
+import { detectPerformanceMode } from '../lib/performance'
+import { trackEvent } from '../lib/analytics'
 
 export type AppPhase = 'explore' | 'teacher'
 export type CameraMode = 'free' | 'follow'
@@ -25,6 +27,19 @@ const DEFAULT_HUD_PANELS: Record<HudPanelId, boolean> = {
   camera: true,
   time: true,
   sidebar: true,
+}
+
+function readInitialPerformanceMode(): boolean {
+  if (typeof window === 'undefined') return false
+  const params = new URLSearchParams(window.location.search)
+  if (params.get('performance') === '1') return true
+  if (params.get('performance') === '0') return false
+  return detectPerformanceMode()
+}
+
+function readInitialSoundOn(): boolean {
+  if (typeof window === 'undefined') return false
+  return new URLSearchParams(window.location.search).get('sound') === '1'
 }
 
 interface AppState {
@@ -61,6 +76,13 @@ interface AppState {
   followPlanetId: string | null
   cameraTransition: CameraTransition
 
+  performanceMode: boolean
+  soundOn: boolean
+  assetLoadingActive: boolean
+  assetLoadingProgress: number
+  scaleCompareOpen: boolean
+  keyboardHintsOpen: boolean
+
   setPhase: (phase: AppPhase) => void
   selectPlanet: (id: string | null) => void
   setHoveredPlanet: (id: string | null) => void
@@ -85,6 +107,13 @@ interface AppState {
   resetCamera: () => void
   setCameraFree: () => void
   completeCameraTransition: () => void
+
+  setPerformanceMode: (enabled: boolean) => void
+  togglePerformanceMode: () => void
+  toggleSound: () => void
+  setAssetLoading: (active: boolean, progress: number) => void
+  setScaleCompareOpen: (open: boolean) => void
+  setKeyboardHintsOpen: (open: boolean) => void
 
   applyTeacherStep: (index: number) => void
   startTeacherMode: () => void
@@ -157,8 +186,18 @@ export const useAppStore = create<AppState>((set, get) => ({
   followPlanetId: null,
   cameraTransition: null,
 
+  performanceMode: readInitialPerformanceMode(),
+  soundOn: readInitialSoundOn(),
+  assetLoadingActive: true,
+  assetLoadingProgress: 0,
+  scaleCompareOpen: false,
+  keyboardHintsOpen: true,
+
   setPhase: (phase) => set({ phase }),
-  selectPlanet: (id) => set({ selectedPlanetId: id }),
+  selectPlanet: (id) => {
+    set({ selectedPlanetId: id })
+    if (id) trackEvent('Planet View', { planet: id })
+  },
   setHoveredPlanet: (id) => set({ hoveredPlanetId: id }),
   setPaused: (paused) => {
     const { isPaused, timeMode, timeScale } = get()
@@ -287,6 +326,14 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   completeCameraTransition: () => set({ cameraTransition: null }),
+
+  setPerformanceMode: (enabled) => set({ performanceMode: enabled }),
+  togglePerformanceMode: () => set((s) => ({ performanceMode: !s.performanceMode })),
+  toggleSound: () => set((s) => ({ soundOn: !s.soundOn })),
+  setAssetLoading: (active, progress) =>
+    set({ assetLoadingActive: active, assetLoadingProgress: progress }),
+  setScaleCompareOpen: (open) => set({ scaleCompareOpen: open }),
+  setKeyboardHintsOpen: (open) => set({ keyboardHintsOpen: open }),
 
   applyTeacherStep: (index) => {
     const step = getTeacherStep(index)
