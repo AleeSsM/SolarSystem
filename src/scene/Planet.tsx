@@ -7,6 +7,7 @@ import { Html, Outlines, useTexture } from '@react-three/drei'
 import type { Mesh } from 'three'
 
 import type { PlanetData } from '../data/planets'
+import { getPlanetSceneRadiusById, getPlanetOrbitRadiusById } from '../data/scales'
 
 import { computeBodyState } from '../simulation/orbit'
 
@@ -58,8 +59,10 @@ export function Planet({ data }: PlanetProps) {
 
   const planetFill = useAppStore((s) => s.planetFill)
   const helicalOrigin = useAppStore((s) => s.helicalMotionStartDays)
+  const radius = getPlanetSceneRadiusById(data.id)
+  const orbitRadius = getPlanetOrbitRadiusById(data.id)
   const material = usePlanetSurfaceMaterial(texture, planetFill)
-  const trail = getPlanetTrailSettings(data.radius, data.orbitRadius)
+  const trail = getPlanetTrailSettings(radius, orbitRadius)
 
 
 
@@ -92,7 +95,7 @@ export function Planet({ data }: PlanetProps) {
 
     const { position, rotationY } = computeBodyState(
       elapsed,
-      data.orbitRadius,
+      orbitRadius,
       data.orbitalPeriodDays,
       data.rotationPeriodDays,
       data.inclinationDeg,
@@ -177,11 +180,11 @@ export function Planet({ data }: PlanetProps) {
 
     >
 
-      <sphereGeometry args={[data.radius, 48, 48]} />
+      <sphereGeometry args={[radius, 48, 48]} />
 
       <primitive object={material} attach="material" />
 
-      {data.id === 'saturn' && <SaturnRings planetRadius={data.radius} />}
+      {data.id === 'saturn' && <SaturnRings planetRadius={radius} />}
 
       {isHighlighted && (
 
@@ -203,7 +206,7 @@ export function Planet({ data }: PlanetProps) {
 
         <Html
 
-          position={[0, data.radius * 1.9, 0]}
+          position={[0, radius * 1.9, 0]}
 
           center
 

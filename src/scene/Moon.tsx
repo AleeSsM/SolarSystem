@@ -7,6 +7,7 @@ import { getPlanetById } from '../data/planets'
 import { getElapsedDays } from '../hooks/useSimulationClock'
 import { computeBodyState, computeOrbitAngle, getCircularOrbitPosition } from '../simulation/orbit'
 import { getPlanetPhaseOffset } from '../simulation/realTime'
+import { moonSceneRadius, getPlanetOrbitRadiusById } from '../data/scales'
 import { MOON_SURFACE } from './planetLighting'
 import { HelicalTrail } from './HelicalTrail'
 import { usePlanetSurfaceMaterial } from './usePlanetSurfaceMaterial'
@@ -25,9 +26,10 @@ function moonWorldPosition(
   if (!parent) return [0, 0, 0] as const
 
   const phaseOffset = getPlanetPhaseOffset(parent.id, timeMode, parent.orbitPhaseOffset)
+  const parentOrbit = getPlanetOrbitRadiusById(parent.id)
   const parentState = computeBodyState(
     elapsed,
-    parent.orbitRadius,
+    parentOrbit,
     parent.orbitalPeriodDays,
     parent.rotationPeriodDays,
     parent.inclinationDeg,
@@ -48,6 +50,7 @@ export function Moon({ data }: MoonProps) {
   const timeMode = useAppStore((s) => s.timeMode)
   const planetFill = useAppStore((s) => s.planetFill)
   const helicalOrigin = useAppStore((s) => s.helicalMotionStartDays)
+  const radius = moonSceneRadius(data.id, data.parentPlanetId)
   const material = usePlanetSurfaceMaterial(texture, planetFill, MOON_SURFACE)
 
   useFrame(() => {
@@ -58,7 +61,6 @@ export function Moon({ data }: MoonProps) {
     const [x, y, z] = moonWorldPosition(elapsed, data, timeMode)
 
     mesh.position.set(x, y, z)
-    mesh.rotation.y = computeOrbitAngle(elapsed, data.orbitalPeriodDays)
   })
 
   return (
@@ -71,7 +73,7 @@ export function Moon({ data }: MoonProps) {
       trailKey={`${helicalOrigin}-${data.id}`}
     >
       <mesh ref={meshRef} name={data.id}>
-        <sphereGeometry args={[data.radius, 24, 24]} />
+        <sphereGeometry args={[radius, 24, 24]} />
         <primitive object={material} attach="material" />
       </mesh>
     </HelicalTrail>

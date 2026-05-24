@@ -1,4 +1,5 @@
 import { PLANETS } from '../data/planets'
+import { getPlanetOrbitRadiusById } from '../data/scales'
 import { MOONS } from '../data/moons'
 import { SimulationClock } from '../hooks/useSimulationClock'
 import { useAppStore } from '../store/useAppStore'
@@ -32,7 +33,7 @@ export function SolarScene() {
           <group key={planet.id}>
             {showOrbits && !helicalMotion && (
               <OrbitPath
-                radius={planet.orbitRadius}
+                radius={getPlanetOrbitRadiusById(planet.id)}
                 color={planet.orbitColor}
                 inclinationDeg={planet.inclinationDeg}
               />

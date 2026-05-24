@@ -2,9 +2,9 @@ import {
   ORBIT_COLORS,
   ORBIT_PHASE_OFFSET,
   PLANET_AU,
-  PLANET_SIZE,
-  auToOrbitRadius,
-  earthRelativeToRadius,
+  getPlanetOrbitRadiusById,
+  getPlanetSceneRadiusById,
+  getSunSceneRadius,
 } from './scales'
 import { texturePath } from '../constants/assets'
 
@@ -28,7 +28,8 @@ export interface PlanetData {
 export const SUN = {
   id: 'sun',
   name: 'Sol',
-  radius: 4,
+  /** Radio en escena; usar getSunSceneRadius() para el mesh 3D. */
+  radius: getSunSceneRadius(),
   color: '#ffcc33',
   emissive: '#ff9900',
   emissiveIntensity: 6,
@@ -52,8 +53,8 @@ const p = (
 ): PlanetData => ({
   id,
   name,
-  radius: earthRelativeToRadius(PLANET_SIZE[id]),
-  orbitRadius: auToOrbitRadius(PLANET_AU[id]),
+  radius: getPlanetSceneRadiusById(id),
+  orbitRadius: getPlanetOrbitRadiusById(id),
   orbitalPeriodDays,
   rotationPeriodDays: Math.abs(rotationPeriodDays),
   inclinationDeg,

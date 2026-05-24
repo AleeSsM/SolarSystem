@@ -24,12 +24,11 @@ function beltOrbitalPeriodDays(au: number) {
 export function AsteroidBelt() {
   const meshRef = useRef<THREE.InstancedMesh>(null)
   const dustRef = useRef<THREE.InstancedMesh>(null)
-  const dummy = useMemo(() => new THREE.Object3D(), [])
+  const dummy = useRef(new THREE.Object3D())
 
   const seeds = useMemo(() => {
     return Array.from({ length: ASTEROID_COUNT }, (_, i) => {
       const au = INNER_AU + rng(i, 1) * (OUTER_AU - INNER_AU)
-      const radius = auToOrbitRadius(au)
       const angle = rng(i, 2) * Math.PI * 2
       const y = (rng(i, 3) - 0.5) * 1.8
       const size = 0.05 + rng(i, 4) * 0.14
@@ -37,7 +36,7 @@ export function AsteroidBelt() {
       const spin = rng(i, 6) * Math.PI * 2
       const spinRateDays = 0.4 + rng(i, 7) * 1.6
       return {
-        radius,
+        au,
         angle,
         y,
         size,
@@ -53,7 +52,7 @@ export function AsteroidBelt() {
     return Array.from({ length: 120 }, (_, i) => {
       const au = INNER_AU + rng(i + 500, 1) * (OUTER_AU - INNER_AU)
       return {
-        radius: auToOrbitRadius(au),
+        au,
         angle: rng(i + 500, 2) * Math.PI * 2,
         y: (rng(i + 500, 3) - 0.5) * 2.4,
         size: 0.025 + rng(i + 500, 4) * 0.04,
@@ -75,39 +74,42 @@ export function AsteroidBelt() {
     const elapsed = getElapsedDays()
     const mesh = meshRef.current
     const dust = dustRef.current
+    const dummyObj = dummy.current
 
     if (mesh) {
       seeds.forEach((seed, i) => {
+        const orbitRadius = auToOrbitRadius(seed.au)
         const angle = computeOrbitAngle(elapsed, seed.orbitalPeriodDays, seed.angle)
-        dummy.position.set(
-          seed.radius * Math.cos(angle),
+        dummyObj.position.set(
+          orbitRadius * Math.cos(angle),
           seed.y,
-          seed.radius * Math.sin(angle),
+          orbitRadius * Math.sin(angle),
         )
-        dummy.rotation.set(
+        dummyObj.rotation.set(
           seed.spin + computeRotation(elapsed, seed.spinRateDays),
           angle,
           computeRotation(elapsed, seed.spinRateDays * 1.4),
         )
-        dummy.scale.setScalar(seed.size)
-        dummy.updateMatrix()
-        mesh.setMatrixAt(i, dummy.matrix)
+        dummyObj.scale.setScalar(seed.size)
+        dummyObj.updateMatrix()
+        mesh.setMatrixAt(i, dummyObj.matrix)
       })
       mesh.instanceMatrix.needsUpdate = true
     }
 
     if (dust) {
       dustSeeds.forEach((seed, i) => {
+        const orbitRadius = auToOrbitRadius(seed.au)
         const angle = computeOrbitAngle(elapsed, seed.orbitalPeriodDays, seed.angle)
-        dummy.position.set(
-          seed.radius * Math.cos(angle),
+        dummyObj.position.set(
+          orbitRadius * Math.cos(angle),
           seed.y,
-          seed.radius * Math.sin(angle),
+          orbitRadius * Math.sin(angle),
         )
-        dummy.rotation.set(0, angle, 0)
-        dummy.scale.setScalar(seed.size)
-        dummy.updateMatrix()
-        dust.setMatrixAt(i, dummy.matrix)
+        dummyObj.rotation.set(0, angle, 0)
+        dummyObj.scale.setScalar(seed.size)
+        dummyObj.updateMatrix()
+        dust.setMatrixAt(i, dummyObj.matrix)
       })
       dust.instanceMatrix.needsUpdate = true
     }

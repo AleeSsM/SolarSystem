@@ -19,6 +19,16 @@ export type CameraMode = 'free' | 'follow'
 export type CameraTransition = 'follow' | 'overview' | 'sun' | null
 export type TimeMode = 'simulated' | 'realTime'
 
+export type HudPanelId = 'camera' | 'time' | 'sidebar' | 'top' | 'teacher'
+
+const DEFAULT_HUD_PANELS: Record<HudPanelId, boolean> = {
+  camera: true,
+  time: true,
+  sidebar: true,
+  top: true,
+  teacher: true,
+}
+
 interface AppState {
   phase: AppPhase
   teacherStepIndex: number
@@ -31,6 +41,7 @@ interface AppState {
   showLabels: boolean
   /** 0–100: relleno uniforme en planetas/lunas (no afecta la luz del Sol). */
   planetFill: number
+  hudPanels: Record<HudPanelId, boolean>
   /** Animacion de entrada activa (bloquea interaccion). */
   introActive: boolean
   introTitleVisible: boolean
@@ -62,6 +73,7 @@ interface AppState {
   toggleOrbits: () => void
   toggleLabels: () => void
   setPlanetFill: (value: number) => void
+  toggleHudPanel: (id: HudPanelId) => void
   setFollowZoom: (value: number) => void
   setIntroTitleVisible: (visible: boolean) => void
   finishIntro: () => void
@@ -130,6 +142,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   showOrbits: true,
   showLabels: false,
   planetFill: 20,
+  hudPanels: { ...DEFAULT_HUD_PANELS },
   introActive: true,
   introTitleVisible: false,
   travelActive: false,
@@ -181,6 +194,10 @@ export const useAppStore = create<AppState>((set, get) => ({
   toggleOrbits: () => set((s) => ({ showOrbits: !s.showOrbits })),
   toggleLabels: () => set((s) => ({ showLabels: !s.showLabels })),
   setPlanetFill: (value) => set({ planetFill: Math.min(100, Math.max(0, value)) }),
+  toggleHudPanel: (id) =>
+    set((s) => ({
+      hudPanels: { ...s.hudPanels, [id]: !s.hudPanels[id] },
+    })),
   setFollowZoom: (value) => set({ followZoom: Math.min(100, Math.max(0, value)) }),
   setIntroTitleVisible: (visible) => set({ introTitleVisible: visible }),
   finishIntro: () =>

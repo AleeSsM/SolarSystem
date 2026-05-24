@@ -1,35 +1,16 @@
-/**
- * Escala visual de distancias (UA → unidades de escena).
- * Compresion potencial: la escala real dejaria a Neptuno fuera de vista util.
- * Tierra = 22 unidades (referencia).
- */
-export function auToOrbitRadius(au: number): number {
-  const base = 12
-  const factor = 10
-  return base + Math.pow(au, 0.65) * factor
-}
+import { Vector3 } from 'three'
 
-/**
- * Escala visual de radios planetarios (relativo a la Tierra = 0.55).
- * Exagerado respecto a distancia para que sean visibles desde lejos.
- */
-export function earthRelativeToRadius(relativeToEarth: number): number {
-  return relativeToEarth * 0.55
-}
+const DISTANCE = { base: 14, factor: 9.2, exponent: 0.8 } as const
 
-/** UA reales por planeta (NASA). */
-export const PLANET_AU = {
-  mercury: 0.387,
-  venus: 0.723,
-  earth: 1.0,
-  mars: 1.524,
-  jupiter: 5.204,
-  saturn: 9.583,
-  uranus: 19.201,
-  neptune: 30.047,
-} as const
+/** Tierra en escena (ratios NASA lineales). */
+export const EARTH_SCENE_RADIUS = 0.38
 
-/** Radio relativo a la Tierra (1 = Tierra). */
+/** Mercurio: primera orbita al doble de distancia al Sol. */
+export const MERCURY_ORBIT_BOOST = 2
+
+/** Sol al doble del radio equilibrado. */
+export const SUN_SIZE_BOOST = 2
+
 export const PLANET_SIZE = {
   mercury: 0.383,
   venus: 0.949,
@@ -41,7 +22,61 @@ export const PLANET_SIZE = {
   neptune: 3.88,
 } as const
 
-/** Desfase inicial en radianes para que no arranquen alineados. */
+export type PlanetId = keyof typeof PLANET_SIZE
+
+export const MOON_TO_PARENT_RATIO = {
+  moon: 0.2724,
+  io: 0.2857,
+} as const
+
+export type MoonId = keyof typeof MOON_TO_PARENT_RATIO
+
+export function auToOrbitRadius(au: number): number {
+  return DISTANCE.base + Math.pow(au, DISTANCE.exponent) * DISTANCE.factor
+}
+
+export function getPlanetOrbitRadiusById(id: string): number {
+  const au = PLANET_AU[id as PlanetId]
+  if (au === undefined) return auToOrbitRadius(1)
+  const radius = auToOrbitRadius(au)
+  if (id === 'mercury') return radius * MERCURY_ORBIT_BOOST
+  return radius
+}
+
+export function getMaxOrbitRadius(): number {
+  return auToOrbitRadius(PLANET_AU.neptune)
+}
+
+export function planetSceneRadius(relativeToEarth: number): number {
+  return EARTH_SCENE_RADIUS * relativeToEarth
+}
+
+export function getPlanetSceneRadiusById(id: string): number {
+  const rel = PLANET_SIZE[id as PlanetId]
+  if (rel === undefined) return EARTH_SCENE_RADIUS
+  return planetSceneRadius(rel)
+}
+
+export function moonSceneRadius(moonId: string, parentPlanetId: string): number {
+  const parentRel = PLANET_SIZE[parentPlanetId as PlanetId]
+  if (parentRel === undefined) return 0.15
+  const parentRadius = planetSceneRadius(parentRel)
+  const ratio = MOON_TO_PARENT_RATIO[moonId as MoonId]
+  if (ratio !== undefined) return parentRadius * ratio
+  return moonId === 'moon' ? 0.15 : 0.22
+}
+
+export const PLANET_AU = {
+  mercury: 0.387,
+  venus: 0.723,
+  earth: 1.0,
+  mars: 1.524,
+  jupiter: 5.204,
+  saturn: 9.583,
+  uranus: 19.201,
+  neptune: 30.047,
+} as const
+
 export const ORBIT_PHASE_OFFSET: Record<string, number> = {
   mercury: 0,
   venus: Math.PI * 0.4,
@@ -53,7 +88,6 @@ export const ORBIT_PHASE_OFFSET: Record<string, number> = {
   neptune: Math.PI * 1.0,
 }
 
-/** Color de linea de orbita por planeta. */
 export const ORBIT_COLORS: Record<string, string> = {
   mercury: '#a0a0a0',
   venus: '#e8c07a',
@@ -63,4 +97,24 @@ export const ORBIT_COLORS: Record<string, string> = {
   saturn: '#d4c4a0',
   uranus: '#7ec8d8',
   neptune: '#4a7fd4',
+}
+
+export const SUN_TO_EARTH_RADIUS = 109.1
+
+export function getSunSceneRadius(): number {
+  const earthR = EARTH_SCENE_RADIUS
+  const jupiterR = earthR * PLANET_SIZE.jupiter
+  const mercuryOrbit = getPlanetOrbitRadiusById('mercury')
+  const idealSun = earthR * SUN_TO_EARTH_RADIUS
+  const orbitCap = mercuryOrbit * 0.36
+  const jupiterFloor = jupiterR * 1.14
+  return Math.max(jupiterFloor, Math.min(idealSun, orbitCap)) * SUN_SIZE_BOOST
+}
+
+export function getSunView(sunRadius: number) {
+  const distance = Math.max(sunRadius * 2.6, 16)
+  return {
+    position: new Vector3(0, sunRadius * 0.22, distance),
+    target: new Vector3(0, 0, 0),
+  }
 }

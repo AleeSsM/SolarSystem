@@ -1,7 +1,7 @@
 import * as THREE from 'three'
-import { NEPTUNE } from '../data/planets'
+import { getMaxOrbitRadius } from '../data/scales'
 
-const MAX_ORBIT = NEPTUNE.orbitRadius
+const MAX_ORBIT = getMaxOrbitRadius()
 
 /** Vista general del sistema (cenital). */
 export const SYSTEM_OVERVIEW = {
@@ -9,8 +9,9 @@ export const SYSTEM_OVERVIEW = {
   target: new THREE.Vector3(0, 0, 0),
 } as const
 
+/** Vista al Sol con radio pedagogico (4). Preferir getSunView(radius). */
 export const SUN_VIEW = {
-  position: new THREE.Vector3(0, 4, 18),
+  position: new THREE.Vector3(0, 4 * 0.22, Math.max(4 * 2.6, 16)),
   target: new THREE.Vector3(0, 0, 0),
 } as const
 

@@ -3,11 +3,14 @@ import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 import type { Group, Mesh } from 'three'
 import { SUN } from '../data/planets'
+import { getSunSceneRadius, SUN_SIZE_BOOST } from '../data/scales'
 import { getElapsedDays } from '../hooks/useSimulationClock'
 import { computeRotation } from '../simulation/orbit'
 import { SUN_ROTATION_PERIOD_DAYS } from '../simulation/systemMotion'
 import { useAppStore } from '../store/useAppStore'
 import { HelicalTrail, SUN_TRAIL } from './HelicalTrail'
+
+const SUN_TRAIL_BASE = getSunSceneRadius() / SUN_SIZE_BOOST
 
 export function Sun() {
   const anchorRef = useRef<Group>(null)
@@ -15,6 +18,8 @@ export function Sun() {
   const glowRef = useRef<Mesh>(null)
   const texture = useTexture(SUN.textureUrl)
   const helicalOrigin = useAppStore((s) => s.helicalMotionStartDays)
+  const radius = getSunSceneRadius()
+  const trailWidth = SUN_TRAIL.width * (radius / SUN_TRAIL_BASE)
 
   useFrame(() => {
     const elapsed = getElapsedDays()
@@ -33,7 +38,7 @@ export function Sun() {
       />
       <HelicalTrail
         color={SUN_TRAIL.color}
-        width={SUN_TRAIL.width}
+        width={trailWidth}
         maxPoints={SUN_TRAIL.maxPoints}
         minSampleDist={SUN_TRAIL.minSampleDist}
         sourceRef={anchorRef}
@@ -41,7 +46,7 @@ export function Sun() {
       >
         <group ref={anchorRef}>
           <mesh ref={meshRef}>
-            <sphereGeometry args={[SUN.radius, 64, 64]} />
+            <sphereGeometry args={[radius, 64, 64]} />
             <meshStandardMaterial
               map={texture}
               emissive={SUN.emissive}
@@ -53,7 +58,7 @@ export function Sun() {
             />
           </mesh>
           <mesh ref={glowRef} scale={1.12}>
-            <sphereGeometry args={[SUN.radius, 32, 32]} />
+            <sphereGeometry args={[radius, 32, 32]} />
             <meshBasicMaterial
               color="#ffaa44"
               transparent

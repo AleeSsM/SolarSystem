@@ -4,10 +4,11 @@ import { OrbitControls } from '@react-three/drei'
 import { Vector3 } from 'three'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { getPlanetById } from '../data/planets'
+import { getPlanetDisplayRadius } from '../data/planetDisplay'
+import { getSunSceneRadius, getSunView } from '../data/scales'
 import { useAppStore } from '../store/useAppStore'
 import {
   CAMERA_LIMITS,
-  SUN_VIEW,
   SYSTEM_OVERVIEW,
   TRANSITION_THRESHOLD,
   getFollowCameraOffset,
@@ -38,9 +39,10 @@ function updateFollowTargets(
   const planet = getPlanetById(planetId)
   if (!planet) return false
 
+  const planetRadius = getPlanetDisplayRadius(planetId)
   const target = new Vector3(...getPlanetPosition(planet))
-  const dist = getFollowDistanceFromZoom(planet.radius, followZoom)
-  const offset = getFollowCameraOffset(planet.radius).normalize().multiplyScalar(dist)
+  const dist = getFollowDistanceFromZoom(planetRadius, followZoom)
+  const offset = getFollowCameraOffset(planetRadius).normalize().multiplyScalar(dist)
   desiredTarget.copy(target)
   desiredCameraPos.copy(target.clone().add(offset))
   return true
@@ -96,7 +98,7 @@ export function CameraRig() {
     if (cameraMode === 'follow' && followPlanetId) {
       const planet = getPlanetById(followPlanetId)
       if (planet) {
-        const limits = getFollowZoomLimits(planet.radius)
+        const limits = getFollowZoomLimits(getPlanetDisplayRadius(followPlanetId))
         controls.minDistance = limits.minDistance
         controls.maxDistance = limits.maxDistance
       }
@@ -122,8 +124,9 @@ export function CameraRig() {
     }
 
     if (cameraTransition === 'sun') {
-      desiredCameraPos.current.copy(SUN_VIEW.position)
-      desiredTarget.current.copy(SUN_VIEW.target)
+      const sunView = getSunView(getSunSceneRadius())
+      desiredCameraPos.current.copy(sunView.position)
+      desiredTarget.current.copy(sunView.target)
       transitionActive.current = true
     }
   }, [cameraTransition, followPlanetId, travelActive])
@@ -139,10 +142,12 @@ export function CameraRig() {
     const planet = getPlanetById(followPlanetId)
     if (!planet) return
 
-    const dist = getFollowDistanceFromZoom(planet.radius, followZoom)
+    const displayRadius = getPlanetDisplayRadius(followPlanetId)
+
+    const dist = getFollowDistanceFromZoom(displayRadius, followZoom)
     const offset = camera.position.clone().sub(controls.target)
     if (offset.lengthSq() < 0.001) {
-      offset.copy(getFollowCameraOffset(planet.radius))
+      offset.copy(getFollowCameraOffset(displayRadius))
     }
     offset.normalize().multiplyScalar(dist)
     camera.position.copy(controls.target).add(offset)
@@ -243,12 +248,13 @@ export function CameraRig() {
         return
       }
       const planetPos = new Vector3(...getPlanetPosition(planet))
+      const displayRadius = getPlanetDisplayRadius(planet.id)
 
       const fov = sampleTravelFrame(
         stage,
         t,
         planetPos,
-        planet.radius,
+        displayRadius,
         travelStartPos.current,
         travelStartTarget.current,
         travelPos.current,
@@ -276,8 +282,8 @@ export function CameraRig() {
           setTravelTitleVisible(false)
           const dist = camera.position.distanceTo(controls.target)
           skipFollowZoomApply.current = true
-          setFollowZoom(getFollowZoomFromDistance(planet.radius, dist))
-          const limits = getFollowZoomLimits(planet.radius)
+          setFollowZoom(getFollowZoomFromDistance(displayRadius, dist))
+          const limits = getFollowZoomLimits(displayRadius)
           controls.minDistance = limits.minDistance
           controls.maxDistance = limits.maxDistance
           finishTravel()
