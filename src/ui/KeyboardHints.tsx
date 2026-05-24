@@ -15,16 +15,16 @@ export function KeyboardHints() {
       <p className="keyboard-hints__title">Atajos de teclado</p>
       <ul className="keyboard-hints__list">
         <li>
-          <kbd>Espacio</kbd> Pausa / play
+          <kbd>Espacio</kbd> Pausa / reproducir
         </li>
         <li>
           <kbd>R</kbd> Vista sistema
         </li>
         <li>
-          <kbd>H</kbd> Helice
+          <kbd>H</kbd> Movimiento helicoidal
         </li>
         <li>
-          <kbd>M</kbd> Musica
+          <kbd>M</kbd> Música
         </li>
         <li>
           <kbd>P</kbd> Modo rendimiento

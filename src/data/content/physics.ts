@@ -2,8 +2,8 @@ import type { TabContent } from './types'
 
 export const physicsContent: TabContent = {
   id: 'physics',
-  label: 'Fisica',
-  title: 'Por que orbitan y no se caen',
+  label: 'Física',
+  title: 'Por qué orbitan y no se caen',
   intro:
     'Version corta de la fisica orbital, sin formulas locas. Lo justo para entender lo que ves en pantalla.',
   blocks: [

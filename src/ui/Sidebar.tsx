@@ -18,10 +18,6 @@ export function Sidebar() {
       </header>
 
       {phase === 'teacher' ? <TeacherStepPanel /> : <EducationalPanel />}
-
-      <footer className="sidebar__footer">
-        <span className="sidebar__badge">React + R3F</span>
-      </footer>
     </aside>
   )
 }

@@ -29,10 +29,10 @@ export function SourceLinkHud() {
       href={GITHUB_REPO_URL}
       target="_blank"
       rel="noopener noreferrer"
-      title="Ver codigo fuente en GitHub"
+      title="Ver código fuente en GitHub"
     >
       <GitHubIcon />
-      <span>Codigo Fuente</span>
+      <span>Código fuente</span>
     </a>
   )
 }

@@ -92,7 +92,7 @@ export const TEACHER_STEPS: TeacherStep[] = [
   },
   {
     id: 'jupiter',
-    title: 'Jupiter',
+    title: 'Júpiter',
     paragraphs: [
       'El gigante gaseoso: mas masivo que todos los demas planetas juntos. Su Mancha Roja es una tormenta centenaria.',
       'Actua como "escudo" gravitatorio, desviando muchos asteroides del sistema interior.',

@@ -41,7 +41,7 @@ export function CameraControls() {
             className={`camera-hud__btn ${isFree ? 'camera-hud__btn--active' : ''}`}
             onClick={setCameraFree}
             disabled={isBusy}
-            title="Explorar libremente sin seguir ningun planeta"
+            title="Explorar libremente sin seguir ningún planeta"
           >
             Modo libre
           </button>
@@ -74,7 +74,7 @@ export function CameraControls() {
         {showZoomSlider && (
           <div className="camera-hud__slider-row">
             <label className="camera-hud__label" htmlFor="follow-zoom">
-              Zoom
+              Acercamiento
             </label>
             <input
               id="follow-zoom"
@@ -86,7 +86,7 @@ export function CameraControls() {
               value={followZoom}
               disabled={isBusy}
               onChange={(e) => setFollowZoom(Number(e.target.value))}
-              title="Acercar o alejar la camara del planeta"
+              title="Acercar o alejar la cámara del planeta"
             />
             <span className="camera-hud__range-value">{followZoom}%</span>
           </div>
@@ -104,7 +104,7 @@ export function CameraControls() {
         )}
         {isBusy && (
           <p className="camera-hud__status camera-hud__status--busy">
-            {travelActive ? 'Viaje en curso…' : 'Transicion de camara…'}
+            {travelActive ? 'Viaje en curso…' : 'Transición de cámara…'}
           </p>
         )}
       </div>

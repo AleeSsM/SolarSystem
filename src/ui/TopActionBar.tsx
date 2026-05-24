@@ -59,10 +59,10 @@ export function TopActionBar() {
         type="button"
         className={`top-actions__btn top-actions__btn--sound ${soundOn ? 'top-actions__btn--sound-on' : ''}`}
         onClick={toggleSound}
-        title="Musica ambiente (Interstellar)"
+        title="Música ambiente"
         aria-pressed={soundOn}
       >
-        {soundOn ? 'Musica ON' : 'Musica'}
+        {soundOn ? 'Música activa' : 'Música'}
       </button>
       <SourceLinkHud />
     </div>

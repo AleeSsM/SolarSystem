@@ -39,7 +39,7 @@ export const modelContent: TabContent = {
       ],
       bullets: [
         'Tiempo Real ancla posiciones a la fecha actual',
-        'Pausa / play en cualquier momento',
+        'Pausa / reproducir en cualquier momento',
       ],
     },
     {

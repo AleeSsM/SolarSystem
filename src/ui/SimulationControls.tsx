@@ -45,15 +45,15 @@ export function SimulationControls() {
             type="button"
             className={`sim-hud__btn sim-hud__btn--play ${!isPaused ? 'sim-hud__btn--active' : ''}`}
             onClick={() => setPaused(false)}
-            title="Reanudar orbitas"
+            title="Reanudar órbitas"
           >
-            Play
+            Reproducir
           </button>
           <button
             type="button"
             className={`sim-hud__btn ${isPaused ? 'sim-hud__btn--active' : ''}`}
             onClick={() => setPaused(true)}
-            title="Pausar orbitas"
+            title="Pausar órbitas"
           >
             Pausa
           </button>
@@ -61,7 +61,7 @@ export function SimulationControls() {
             type="button"
             className={`sim-hud__btn ${isRealTime ? 'sim-hud__btn--active' : ''}`}
             onClick={toggleRealTime}
-            title="Anclar posiciones a la fecha actual y avanzar desde ahi"
+            title="Anclar posiciones a la fecha actual y avanzar desde ahí"
           >
             Tiempo Real
           </button>

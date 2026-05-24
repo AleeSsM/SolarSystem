@@ -13,7 +13,7 @@ export function PlanetTabContent() {
       <article className="edu-content edu-content--empty">
         <h2 className="edu-content__title">Planeta</h2>
         <p className="edu-content__intro">
-          Haz click en un planeta o elige uno en Viajar a para ver su info aqui.
+          Haz clic en un planeta o elige uno en «Viajar a» para ver su información aquí.
         </p>
       </article>
     )
@@ -39,7 +39,7 @@ export function PlanetTabContent() {
 
       <dl className="planet-detail__facts">
         <div>
-          <dt>Tamano relativo</dt>
+          <dt>Tamaño relativo</dt>
           <dd>{planet.sizeRelative}</dd>
         </div>
         <div>
@@ -51,12 +51,12 @@ export function PlanetTabContent() {
           <dd>{planet.temperature}</dd>
         </div>
         <div>
-          <dt>Periodo orbital</dt>
-          <dd>{planet.orbitalPeriodDays.toLocaleString('es')} dias terrestres</dd>
+          <dt>Período orbital</dt>
+          <dd>{planet.orbitalPeriodDays.toLocaleString('es')} días terrestres</dd>
         </div>
         <div>
-          <dt>Rotacion</dt>
-          <dd>{planet.rotationPeriodDays} dia(s) terrestre(s)</dd>
+          <dt>Rotación</dt>
+          <dd>{planet.rotationPeriodDays} día(s) terrestre(s)</dd>
         </div>
       </dl>
 

@@ -35,13 +35,13 @@ export function HelicalMotionHud() {
       onClick={toggleHelicalMotion}
       title={
         helicalMotion
-          ? 'Desactivar estelas helicoidales'
-          : 'Orbitas normales + estela hacia abajo (efecto helicoidal)'
+          ? 'Desactivar movimiento helicoidal y estelas'
+          : 'Activar movimiento helicoidal (estelas en el tiempo)'
       }
       aria-pressed={helicalMotion}
     >
       <HelixIcon />
-      <span>{helicalMotion ? 'Helice ON' : 'Movimiento helicoidal'}</span>
+      <span>{helicalMotion ? 'Movimiento helicoidal activo' : 'Movimiento helicoidal'}</span>
     </button>
   )
 }

@@ -4,10 +4,10 @@ import { getElapsedDays } from '../hooks/useSimulationClock'
 export function formatSimulatedTime(days: number): string {
   const years = days / 365.25
   if (years >= 1) {
-    return `${years.toFixed(2)} anos terrestres`
+    return `${years.toFixed(2)} años terrestres`
   }
   if (days >= 1) {
-    return `${days.toFixed(1)} dias simulados`
+    return `${days.toFixed(1)} días simulados`
   }
   const hours = days * 24
   if (hours >= 1) {
