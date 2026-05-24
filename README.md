@@ -1,42 +1,33 @@
-<p align="center">
+<div align="center">
 
-# Sistema Solar 3D
+<h1>Sistema Solar 3D</h1>
 
-<br/>
-
-<img src="https://img.shields.io/badge/IPN-Instituto_Politécnico_Nacional-7B1E1E?style=for-the-badge&labelColor=1a1a2e" alt="IPN"/>
-&nbsp;
-<img src="https://img.shields.io/badge/demo-GitHub_Pages-3d6cff?style=for-the-badge&labelColor=0d1117" alt="Demo"/>
-&nbsp;
-<img src="https://img.shields.io/badge/WebGL-3D-0d1117?style=for-the-badge&labelColor=1f2937" alt="WebGL"/>
-
-<br/><br/>
-
-<img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript"/>
-&nbsp;
-<img src="https://img.shields.io/badge/React-20232a?style=flat-square&logo=react&logoColor=61dafb" alt="React"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Three.js-000?style=flat-square&logo=threedotjs&logoColor=white" alt="Three.js"/>
-&nbsp;
-<img src="https://img.shields.io/badge/React_Three_Fiber-000?style=flat-square&logo=react&logoColor=white" alt="R3F"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite"/>
-&nbsp;
-<img src="https://img.shields.io/badge/Zustand-764ABC?style=flat-square" alt="Zustand"/>
-
-<br/><br/>
-
-**Exploración 3D del Sistema Solar en el navegador**
-
-*Órbitas reales · escala pedagógica · cámara libre · tiempo acelerado*
-
-<br/>
-
-[**Abrir simulación**](https://aleessm.github.io/SolarSystem/) &nbsp;·&nbsp;
-[Documentación](docs/manual-usuario.md) &nbsp;·&nbsp;
-[Código fuente](https://github.com/AleeSsM/SolarSystem)
-
+<p>
+  <a href="https://www.ipn.mx/"><img src="https://img.shields.io/badge/IPN-Instituto_Politécnico_Nacional-7B1E1E?style=for-the-badge&labelColor=1a1a2e" alt="Instituto Politécnico Nacional"/></a>
+  <a href="https://aleessm.github.io/SolarSystem/"><img src="https://img.shields.io/badge/Demo-GitHub_Pages-3d6cff?style=for-the-badge&labelColor=0d1117" alt="Demo en GitHub Pages"/></a>
+  <img src="https://img.shields.io/badge/WebGL-3D-0d1117?style=for-the-badge&labelColor=1f2937" alt="WebGL 3D"/>
 </p>
+
+<p>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript"/>
+  <img src="https://img.shields.io/badge/React-20232a?style=flat-square&logo=react&logoColor=61dafb" alt="React"/>
+  <img src="https://img.shields.io/badge/Three.js-000?style=flat-square&logo=threedotjs&logoColor=white" alt="Three.js"/>
+  <img src="https://img.shields.io/badge/R3F-ffffff?style=flat-square&logo=react&logoColor=61dafb" alt="React Three Fiber"/>
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite"/>
+  <img src="https://img.shields.io/badge/Zustand-764ABC?style=flat-square" alt="Zustand"/>
+</p>
+
+<p><strong>Exploración 3D del Sistema Solar en el navegador</strong></p>
+<p><em>Órbitas reales · escala pedagógica · cámara libre · tiempo acelerado</em></p>
+<p>
+  <a href="https://aleessm.github.io/SolarSystem/"><strong>Abrir simulación</strong></a>
+  ·
+  <a href="docs/manual-usuario.md">Documentación</a>
+  ·
+  <a href="https://github.com/AleeSsM/SolarSystem">Código fuente</a>
+</p>
+
+</div>
 
 ---
 
