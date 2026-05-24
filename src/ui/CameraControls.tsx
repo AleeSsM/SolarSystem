@@ -4,6 +4,7 @@ import { useAppStore } from '../store/useAppStore'
 export function CameraControls() {
   const phase = useAppStore((s) => s.phase)
   const introActive = useAppStore((s) => s.introActive)
+  const travelActive = useAppStore((s) => s.travelActive)
   const cameraMode = useAppStore((s) => s.cameraMode)
   const followPlanetId = useAppStore((s) => s.followPlanetId)
   const selectedPlanetId = useAppStore((s) => s.selectedPlanetId)
@@ -16,7 +17,7 @@ export function CameraControls() {
 
   if (phase === 'teacher' || introActive) return null
 
-  const isBusy = cameraTransition !== null
+  const isBusy = cameraTransition !== null || travelActive
   const isFree = cameraMode === 'free'
   const followingName = PLANETS.find((p) => p.id === followPlanetId)?.name
   const showZoomSlider = cameraMode === 'follow' && (followPlanetId || selectedPlanetId)
@@ -100,7 +101,9 @@ export function CameraControls() {
         </p>
       )}
       {isBusy && (
-        <p className="camera-hud__status camera-hud__status--busy">Transicion de camara…</p>
+        <p className="camera-hud__status camera-hud__status--busy">
+          {travelActive ? 'Viaje en curso…' : 'Transicion de camara…'}
+        </p>
       )}
     </div>
   )

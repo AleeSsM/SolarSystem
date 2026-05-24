@@ -34,6 +34,13 @@ interface AppState {
   /** Animacion de entrada activa (bloquea interaccion). */
   introActive: boolean
   introTitleVisible: boolean
+  /** Viaje cinematografico al seleccionar planeta. */
+  travelActive: boolean
+  travelPlanetId: string | null
+  travelTitleVisible: boolean
+  travelInfoRevealed: boolean
+  /** Incrementa en cada viaje para reiniciar animacion (click o select). */
+  travelRequestId: number
   /** 0 = zoom out, 100 = zoom in (solo al seguir planeta). */
   followZoom: number
   activeEducationalTab: EducationalTabId
@@ -55,6 +62,9 @@ interface AppState {
   setFollowZoom: (value: number) => void
   setIntroTitleVisible: (visible: boolean) => void
   finishIntro: () => void
+  setTravelTitleVisible: (visible: boolean) => void
+  finishTravel: () => void
+  cancelTravel: () => void
   setActiveEducationalTab: (tab: EducationalTabId) => void
 
   followPlanet: (id: string) => void
@@ -118,6 +128,11 @@ export const useAppStore = create<AppState>((set, get) => ({
   planetFill: 20,
   introActive: true,
   introTitleVisible: false,
+  travelActive: false,
+  travelPlanetId: null,
+  travelTitleVisible: false,
+  travelInfoRevealed: true,
+  travelRequestId: 0,
   followZoom: 42,
   activeEducationalTab: 'system',
 
@@ -139,10 +154,11 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
   setTimeScale: (scale) => {
     const { timeMode, timeScale: currentScale, isPaused } = get()
-    if (timeMode === 'realTime' && !isPaused && scale !== currentScale) {
+    const allowed = scale <= 10_000_000 ? scale : 10_000_000
+    if (timeMode === 'realTime' && !isPaused && allowed !== currentScale) {
       reanchorRealTimeClock(currentScale)
     }
-    set({ timeScale: scale })
+    set({ timeScale: allowed })
   },
   setTimeMode: (mode) => set({ timeMode: mode }),
   toggleRealTime: () => {
@@ -162,33 +178,72 @@ export const useAppStore = create<AppState>((set, get) => ({
   setFollowZoom: (value) => set({ followZoom: Math.min(100, Math.max(0, value)) }),
   setIntroTitleVisible: (visible) => set({ introTitleVisible: visible }),
   finishIntro: () => set({ introActive: false, introTitleVisible: false, isPaused: false }),
+  setTravelTitleVisible: (visible) => set({ travelTitleVisible: visible }),
+  finishTravel: () =>
+    set({
+      travelActive: false,
+      travelPlanetId: null,
+      travelTitleVisible: false,
+      travelInfoRevealed: true,
+      cameraTransition: null,
+    }),
+  cancelTravel: () =>
+    set({
+      travelActive: false,
+      travelPlanetId: null,
+      travelTitleVisible: false,
+      travelInfoRevealed: true,
+    }),
   setActiveEducationalTab: (tab) => set({ activeEducationalTab: tab }),
 
-  followPlanet: (id) =>
+  followPlanet: (id) => {
+    const { introActive, phase } = get()
+    if (introActive || phase === 'teacher') {
+      set({
+        cameraMode: 'follow',
+        followPlanetId: id,
+        cameraTransition: 'follow',
+        selectedPlanetId: id,
+        activeEducationalTab: 'planet',
+        followZoom: 42,
+        travelInfoRevealed: true,
+      })
+      return
+    }
+
     set({
+      travelActive: true,
+      travelPlanetId: id,
+      travelTitleVisible: false,
+      travelInfoRevealed: false,
+      travelRequestId: get().travelRequestId + 1,
       cameraMode: 'follow',
       followPlanetId: id,
-      cameraTransition: 'follow',
+      cameraTransition: null,
       selectedPlanetId: id,
       activeEducationalTab: 'planet',
-      followZoom: 42,
-    }),
+    })
+  },
 
-  resetCamera: () =>
+  resetCamera: () => {
+    get().cancelTravel()
     set({
       cameraMode: 'free',
       followPlanetId: null,
       cameraTransition: 'overview',
       selectedPlanetId: null,
       hoveredPlanetId: null,
-    }),
+    })
+  },
 
-  setCameraFree: () =>
+  setCameraFree: () => {
+    get().cancelTravel()
     set({
       cameraMode: 'free',
       followPlanetId: null,
       cameraTransition: null,
-    }),
+    })
+  },
 
   completeCameraTransition: () => set({ cameraTransition: null }),
 

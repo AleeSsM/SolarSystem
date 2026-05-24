@@ -21,6 +21,8 @@ export function EducationalPanel() {
   const activeTab = useAppStore((s) => s.activeEducationalTab)
   const setActiveTab = useAppStore((s) => s.setActiveEducationalTab)
   const selectedPlanetId = useAppStore((s) => s.selectedPlanetId)
+  const travelActive = useAppStore((s) => s.travelActive)
+  const travelInfoRevealed = useAppStore((s) => s.travelInfoRevealed)
 
   useEffect(() => {
     if (selectedPlanetId) setActiveTab('planet')
@@ -43,8 +45,18 @@ export function EducationalPanel() {
         ))}
       </Box>
 
-      <Box className="edu-panel__body" role="tabpanel">
-        {activeTab === 'planet' && <PlanetTabContent />}
+      <Box
+        className={`edu-panel__body ${travelInfoRevealed && selectedPlanetId ? 'edu-panel__body--revealed' : ''}`}
+        role="tabpanel"
+      >
+        {activeTab === 'planet' &&
+          (travelActive && !travelInfoRevealed ? (
+            <article className="edu-content edu-content--travel">
+              <p className="edu-content__intro">Acercando al planeta…</p>
+            </article>
+          ) : (
+            <PlanetTabContent />
+          ))}
         {activeTab === 'system' && <TabContentView content={solarSystemContent} />}
         {activeTab === 'model' && <TabContentView content={modelContent} />}
         {activeTab === 'physics' && <TabContentView content={physicsContent} />}

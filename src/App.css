@@ -6,6 +6,10 @@
   background: #030014;
 }
 
+.app-layout--intro {
+  grid-template-columns: 1fr;
+}
+
 .viewport {
   position: relative;
   min-width: 0;
@@ -21,10 +25,12 @@
 .source-hud {
   position: absolute;
   top: 1rem;
-  left: 50%;
+  right: 1rem;
   z-index: 12;
-  transform: translateX(-50%);
-  padding: 0.45rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
   border-radius: 999px;
   border: 1px solid rgba(139, 156, 255, 0.35);
   background: rgba(6, 6, 18, 0.82);
@@ -35,6 +41,11 @@
   letter-spacing: 0.04em;
   text-decoration: none;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.source-hud__icon {
+  flex-shrink: 0;
+  opacity: 0.9;
 }
 
 .source-hud:hover {
@@ -322,18 +333,60 @@
   }
 }
 
+.travel-overlay__name {
+  color: var(--travel-accent, #eef6ff);
+}
+
+.travel-overlay__divider {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--travel-accent, #8b9cff) 55%, transparent) 25%,
+    color-mix(in srgb, var(--travel-accent, #ffb050) 70%, transparent) 50%,
+    color-mix(in srgb, var(--travel-accent, #8b9cff) 55%, transparent) 75%,
+    transparent
+  );
+}
+
+.edu-content--travel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+}
+
+.edu-panel__body--revealed .planet-detail {
+  animation: edu-reveal 0.55s ease both;
+}
+
+@keyframes edu-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .planet-label {
   padding: 0.2rem 0.55rem;
   border-radius: 6px;
   background: rgba(6, 6, 18, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #e8eaf6;
-  font-size: 0.72rem;
+  font-size: clamp(0.62rem, 0.55rem + 0.35vw, 0.82rem);
   font-weight: 600;
   letter-spacing: 0.04em;
   white-space: nowrap;
   user-select: none;
   transition: border-color 0.15s, background 0.15s;
+}
+
+.planet-label--free {
+  font-size: clamp(0.68rem, 0.6rem + 0.55vw, 0.95rem);
+  padding: 0.22rem 0.62rem;
 }
 
 .planet-label--hover {
@@ -636,8 +689,8 @@
   flex-direction: column;
   min-height: 0;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(139, 156, 255, 0.18);
   overflow: hidden;
 }
 
@@ -886,9 +939,15 @@
   flex-direction: column;
   gap: 1rem;
   height: 100%;
-  padding: 1.75rem 1.5rem;
-  background: linear-gradient(180deg, #0a0a1f 0%, #060612 100%);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 0.65rem 0.65rem 0.65rem 0;
+  padding: 1.5rem 1.35rem;
+  border-radius: 14px;
+  background: rgba(8, 8, 22, 0.62);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(139, 156, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.35);
   overflow-y: auto;
 }
 

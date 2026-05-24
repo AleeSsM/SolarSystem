@@ -1,4 +1,4 @@
-export const TIME_SCALE_OPTIONS = [1, 100_000, 1_000_000, 10_000_000, 100_000_000] as const
+export const TIME_SCALE_OPTIONS = [1, 100_000, 1_000_000, 10_000_000] as const
 export type TimeScaleOption = (typeof TIME_SCALE_OPTIONS)[number]
 
 export function formatTimeScaleLabel(scale: number): string {

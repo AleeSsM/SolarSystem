@@ -49,6 +49,15 @@ export function getFollowDistanceFromZoom(planetRadius: number, zoomPercent: num
   return minDistance + (1 - t) * (maxDistance - minDistance)
 }
 
+/** Inverso: distancia actual → valor de la barra de zoom. */
+export function getFollowZoomFromDistance(planetRadius: number, distance: number): number {
+  const { minDistance, maxDistance } = getFollowZoomLimits(planetRadius)
+  const span = maxDistance - minDistance
+  if (span <= 0) return 42
+  const t = 1 - (distance - minDistance) / span
+  return Math.round(Math.min(100, Math.max(0, t * 100)))
+}
+
 export function smoothDampFactor(delta: number, speed = 5): number {
   return 1 - Math.exp(-speed * delta)
 }
