@@ -1,199 +1,186 @@
-```
-                         ·    ˚        ✦
-              ·                    ·
-         ·              ·    ·              ·
-    ────────────╮              ╭────────────
-                │   ◉ SOL    │
-         ○      │  ╱ ╲ ╱ ╲   │      ○
-      ──○──     │ ◯   ◯   ◯  │     ──○──
-         ○      │  ╲ ╱ ╲ ╱   │      ○
-    ────────────╯              ╰────────────
-         ·     ◠ ◡ ◠  S I S T E M A     ·
-              ·    S O L A R   3 D    ·
-                         ·    ˚
+<p align="center">
 
-      ╔══════════════════════════════════════════╗
-      ║  > INICIANDO MÓDULO HELIOCENTRICO...     ║
-      ║  > ÓRBITAS: CARGADAS  ·  SHADERS: OK    ║
-      ║  > IPN :: WEBGL :: THREE.JS :: REACT     ║
-      ╚══════════════════════════════════════════╝
+```
+      *   .       *       .       *       .
+         .     _________     .
+    *        /    *    \        *
+            |   ( @ )   |          <- Sol
+    *        \___:::___/        *
+         .       | |       .
+      *   .       *       .       *       .
+
+        SISTEMA SOLAR 3D  ·  WEBGL
 ```
 
-# Sistema Solar 3D
+<br/>
 
-> *Más allá del vacío* — exploración interactiva del Sistema Solar en el navegador.
+<img src="https://img.shields.io/badge/IPN-Instituto_Politécnico_Nacional-7B1E1E?style=for-the-badge&labelColor=1a1a2e" alt="IPN"/>
+<img src="https://img.shields.io/badge/demo-GitHub_Pages-3d6cff?style=for-the-badge&labelColor=0d1117" alt="Demo"/>
+<img src="https://img.shields.io/badge/stack-React_·_Three.js_·_R3F-61dafb?style=for-the-badge&labelColor=0d1117" alt="Stack"/>
 
-**Demo en vivo:** [**aleessm.github.io/SolarSystem**](https://aleessm.github.io/SolarSystem/)
+<br/><br/>
+
+**Exploración 3D del Sistema Solar en el navegador**
+
+*Órbitas reales · escala pedagógica · cámara libre · tiempo acelerado*
+
+<br/>
+
+[**Abrir simulación**](https://aleessm.github.io/SolarSystem/) &nbsp;·&nbsp;
+[Documentación](docs/manual-usuario.md) &nbsp;·&nbsp;
+[Código fuente](https://github.com/AleeSsM/SolarSystem)
+
+</p>
 
 ---
 
 ## Instituto Politécnico Nacional
 
-Proyecto personal de exploración espacial desarrollado en el contexto académico del **Instituto Politécnico Nacional (IPN)** — México.
+<table>
+<tr>
+<td width="120" align="center"><strong>IPN</strong><br/><sub>México</sub></td>
+<td>
+
+Proyecto de **exploración espacial interactiva** desarrollado en el marco académico del [Instituto Politécnico Nacional](https://www.ipn.mx/).
+
+*La técnica al servicio de la patria* — aplicada aquí como divulgación científica accesible: visualizar órbitas, escalas y movimiento planetario sin salir del navegador.
+
+</td>
+</tr>
+</table>
+
+---
+
+## Vista general
 
 | | |
-|---|---|
-| **Institución** | [Instituto Politécnico Nacional](https://www.ipn.mx/) |
-| **Sitio oficial** | [ipn.mx](https://www.ipn.mx/) |
-| **Enfoque** | Visualización 3D, órbitas keplerianas simplificadas y divulgación científica |
+|:---|:---|
+| **Qué hace** | Simula los 8 planetas, la Luna, Io y el cinturón de asteroides con texturas, iluminación y control temporal |
+| **Para quién** | Curiosos del espacio, estudiantes y quien quiera *sentir* las órbitas antes de meterse en efemérides |
+| **Qué no es** | Un planetario profesional ni un modelo NASA al milímetro en distancia **y** tamaño a la vez |
 
-```text
-    ┌─────────────────────────────────────────┐
-    │  IPN  ·  La técnica al servicio        │
-    │       de la patria                      │
-    └─────────────────────────────────────────┘
+<details>
+<summary><strong>Terminal — especificaciones del módulo</strong></summary>
+
+<br/>
+
+```bash
+$ solar-system --status
+
+  [core]     helioframe .............. OK
+  [render]   webgl2 · r3f · drei ...... OK
+  [data]     J2000 inclinations ....... OK
+  [ui]       es-MX locale ............. OK
+  [ipn]      attribution .............. linked
+
+  orbit_radius = 14 + AU^0.8 * 9.2
+  period       = NASA/JPL (circular)
 ```
+
+</details>
 
 ---
 
-## Qué es esto
+## Características principales
 
-Simulación **3D interactiva** del Sistema Solar: ocho planetas, satélites, cinturón de asteroides, control temporal, cámara libre, tour guiado y panel educativo. Construida con **React**, **Three.js** y **React Three Fiber**.
+<p align="center">
+  <code>planetas</code> · <code>órbitas</code> · <code>tiempo</code> · <code>cámara</code> · <code>tour</code> · <code>hélice</code>
+</p>
 
-No pretende ser un planetario profesional, sino un **laboratorio visual** para entender órdenes de magnitud, periodos orbitales y el compromiso entre *ver todo* y *ver algo con sentido* en pantalla.
+- **Sistema completo** — Mercurio a Neptuno, satélites, Sol con corona y cinturón de asteroides
+- **Órbitas físicas** — periodos reales; inclinación y nodo ascendente (J2000)
+- **Tiempo** — pausa, `x1` … `x1000M`, modo **Tiempo Real** anclado a la fecha actual
+- **Cámara** — vista sistema, modo libre, seguimiento de planeta, viajes cinematográficos
+- **Modo helicoidal** — estelas que muestran el paso del tiempo (sin círculos de órbita)
+- **Educación** — ficha por planeta, «Hoy en el cielo», tabla *distancia real vs escena*
+- **Extras** — tour de 12 paradas, música ambiente, modo rendimiento, atajos de teclado
 
----
+### Atajos
 
-## Características
+| Tecla | Acción |
+|:------|:-------|
+| `Espacio` | Pausa / reproducir |
+| `R` | Vista sistema |
+| `H` | Movimiento helicoidal |
+| `M` | Música |
+| `P` | Modo rendimiento |
+| `?` | Atajos on/off |
 
-```
-  [✓] 8 planetas · texturas · rotación · inclinación J2000
-  [✓] Luna + Io · cinturón de asteroides instanciado
-  [✓] Cámara libre / seguimiento · viajes cinematográficos
-  [✓] Tiempo simulado · Tiempo Real · x1 → x1000M
-  [✓] Modo helicoidal · estelas temporales
-  [✓] Tour guiado (12 paradas) · panel Info
-  [✓] «Hoy en el cielo» · comparar escala real vs escena
-  [✓] Música ambiente · modo rendimiento · atajos de teclado
-```
-
-| Módulo | Descripción |
-|--------|-------------|
-| **Órbitas** | Periodos reales; trayectorias circulares con inclinación y nodo ascendente |
-| **Escala** | Distancias comprimidas (`14 + AU^0.8 × 9.2`); tamaños exagerados para legibilidad |
-| **Helicoidal** | Estelas que envejecen en el tiempo (efecto de hélice galáctica educativa) |
-| **Educación** | Pestañas Planeta · Sistema · Detalles · Física |
-
-### Atajos de teclado
-
-```text
-  ┌──────────┬─────────────────────────────┐
-  │ Espacio  │  Pausa / reproducir         │
-  │    R     │  Vista sistema              │
-  │    H     │  Movimiento helicoidal      │
-  │    M     │  Música                     │
-  │    P     │  Modo rendimiento           │
-  │    ?     │  Mostrar / ocultar atajos   │
-  └──────────┴─────────────────────────────┘
-```
-
-### Enlaces profundos (URL)
-
-```text
-  ?planet=mars          → enfoque en Marte
-  ?sound=0              → música apagada al inicio
-  ?performance=1        → modo rendimiento forzado
-```
+**URL:** `?planet=mars` · `?sound=0` · `?performance=1`
 
 ---
 
 ## Inicio rápido
 
 ```bash
-# clonar y entrar al directorio con package.json
 npm install
 npm run dev
 ```
 
-Abrir [**http://localhost:5173**](http://localhost:5173)
+→ [http://localhost:5173](http://localhost:5173)
 
-> Si clonas el repo completo, el código vive en `SolarSystem/SolarSystem/`.
+> El `package.json` está en `SolarSystem/SolarSystem/` si clonas el repositorio completo.
 
 ```bash
-npm run build     # producción (GitHub Pages)
-npm run preview   # vista previa del build
-npm run lint      # ESLint
+npm run build    # despliegue (GitHub Pages)
+npm run preview
+npm run lint
 ```
 
 ---
 
-## Stack
+## Stack técnico
 
-```text
-   ┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-   │   React 19  │────▶│  Three.js    │────▶│   WebGL2    │
-   └─────────────┘     │  R3F · Drei  │     └─────────────┘
-          │              └──────────────┘
-          ▼
-   ┌─────────────┐     ┌──────────────┐
-   │   Zustand   │     │ Postprocessing│
-   └─────────────┘     └──────────────┘
-          │
-          ▼
-   ┌─────────────┐
-   │ Vite + TS   │
-   └─────────────┘
-```
+<p align="center">
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TS"/>
+  <img src="https://img.shields.io/badge/React-20232a?style=flat-square&logo=react&logoColor=61dafb" alt="React"/>
+  <img src="https://img.shields.io/badge/Three.js-000?style=flat-square&logo=threedotjs&logoColor=white" alt="Three"/>
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite"/>
+  <img src="https://img.shields.io/badge/Zustand-764ABC?style=flat-square" alt="Zustand"/>
+</p>
 
-| Capa | Tecnología |
-|------|------------|
-| Build | Vite · TypeScript |
+| Capa | Herramienta |
+|:-----|:------------|
+| Build | Vite + TypeScript |
 | UI | React 19 |
 | 3D | Three.js · React Three Fiber · Drei |
 | Estado | Zustand |
-| Efectos | Postprocessing (bloom) |
+| Post | Bloom (postprocessing) |
 
 ---
 
-## Modelo y escala
+## Documentación
 
-El universo en pantalla **no** puede ser fiel en distancia y tamaño a la vez. Este proyecto elige una **escala única equilibrada**:
-
-```text
-  orbitRadius = 14 + AU^0.8 × 9.2     ← distancias comprimidas
-  radio_planeta ∝ ratio NASA/Tierra   ← tamaños legibles
-  periodo orbital = dato real         ← velocidades angulares correctas
-```
-
-Documentación detallada:
-
-- [docs/manual-usuario.md](docs/manual-usuario.md) — controles e interfaz
-- [docs/arquitectura.md](docs/arquitectura.md) — organización del código
-- [docs/modelo-fisico.md](docs/modelo-fisico.md) — supuestos físicos
-- [docs/escalas.md](docs/escalas.md) — fórmulas de escala
+| Archivo | Contenido |
+|:--------|:----------|
+| [manual-usuario.md](docs/manual-usuario.md) | Controles e interfaz |
+| [arquitectura.md](docs/arquitectura.md) | Estructura del código |
+| [modelo-fisico.md](docs/modelo-fisico.md) | Supuestos del modelo |
+| [escalas.md](docs/escalas.md) | Fórmulas de escala |
 
 ---
 
-## Analytics (opcional)
+## Créditos
 
-```bash
-cp .env.example .env
-# VITE_PLAUSIBLE_DOMAIN=tu-dominio.github.io
-```
-
----
-
-## Créditos y datos
-
-| Recurso | Fuente |
-|---------|--------|
-| Texturas planetarias | [Stellarium](https://stellarium.org/) (CC) |
-| Textura del Sol | [homer-jay/solar-system-textures](https://github.com/homer-jay/solar-system-textures) (CC BY 4.0) |
-| Tierra | ejemplos three.js |
-| Ephemerides / periodos | NASA · JPL (órbitas circulares simplificadas) |
-| Música ambiente | tema *Interstellar* (uso personal / educativo) |
+| Recurso | Origen |
+|:--------|:-------|
+| Texturas planetarias | [Stellarium](https://stellarium.org/) |
+| Sol | [solar-system-textures](https://github.com/homer-jay/solar-system-textures) (CC BY 4.0) |
+| Periodos / inclinaciones | NASA · JPL |
+| Música | *Interstellar* — uso personal / educativo |
 
 ---
 
-## Licencia
+<p align="center">
 
-Código del repositorio bajo la licencia indicada en el proyecto. Las texturas y assets de terceros conservan sus licencias originales.
+<sub>
 
----
+**Instituto Politécnico Nacional** · Proyecto personal · 2026
 
-```text
-      ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·
-         Instituto Politécnico Nacional  ·  2026
-              >> FIN DE TRANSMISIÓN <<
-      ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·
-```
+<br/>
+
+[ipn.mx](https://www.ipn.mx/) · [Demo](https://aleessm.github.io/SolarSystem/)
+
+</sub>
+
+</p>
