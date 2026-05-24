@@ -1,10 +1,11 @@
 import { useTexture } from '@react-three/drei'
 import { BackSide } from 'three'
+import { texturePath } from '../constants/assets'
 
 const SKY_RADIUS = 480
 
 export function SpaceSkybox() {
-  const texture = useTexture('/textures/skybox.jpg')
+  const texture = useTexture(texturePath('skybox.jpg'))
 
   return (
     <mesh renderOrder={-2} frustumCulled={false}>

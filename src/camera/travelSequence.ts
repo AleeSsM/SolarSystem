@@ -4,8 +4,8 @@ import { easeOutCubic } from './introSequence'
 export type TravelStage = 'approach' | 'reveal'
 
 export const TRAVEL_DURATIONS = {
-  approach: 0.9,
-  reveal: 0.65,
+  approach: 1.9,
+  reveal: 1.25,
 } as const
 
 const _a = new THREE.Vector3()

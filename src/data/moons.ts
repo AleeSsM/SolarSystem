@@ -1,3 +1,5 @@
+import { texturePath } from '../constants/assets'
+
 export interface MoonData {
   id: string
   name: string
@@ -15,7 +17,7 @@ export const MOON: MoonData = {
   radius: 0.15,
   orbitRadius: 1.2,
   orbitalPeriodDays: 27.32,
-  textureUrl: '/textures/moon.jpg',
+  textureUrl: texturePath('moon.jpg'),
 }
 
 export const IO: MoonData = {
@@ -25,7 +27,7 @@ export const IO: MoonData = {
   radius: 0.22,
   orbitRadius: 2.2,
   orbitalPeriodDays: 1.77,
-  textureUrl: '/textures/mercury.png',
+  textureUrl: texturePath('mercury.png'),
 }
 
 export const MOONS: MoonData[] = [MOON, IO]
