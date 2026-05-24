@@ -31,7 +31,7 @@ export function SimulationControls() {
 
   return (
     <div className="sim-hud">
-      <p className="sim-hud__title">Simulacion</p>
+      <p className="sim-hud__title">Tiempo</p>
       <div className="sim-hud__time">
         <span className="sim-hud__time-label">{timeLabel}</span>
         <span className="sim-hud__time-value">{timeValue}</span>
@@ -100,7 +100,7 @@ export function SimulationControls() {
           step={1}
           value={planetFill}
           onChange={(e) => setPlanetFill(Number(e.target.value))}
-          title="Relleno uniforme del planeta (no modifica la luz solar)"
+          title="Aclara la cara oscura del planeta sin quitar la luz solar"
         />
         <span className="sim-hud__range-value">{planetFill}%</span>
       </div>

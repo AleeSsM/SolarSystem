@@ -13,8 +13,7 @@ export function PlanetTabContent() {
       <article className="edu-content edu-content--empty">
         <h2 className="edu-content__title">Planeta</h2>
         <p className="edu-content__intro">
-          Selecciona un planeta en el canvas (click) o usa el menu Viajar a del
-          HUD de camara para ver su ficha cientifica aqui.
+          Haz click en un planeta o elige uno en Viajar a para ver su info aqui.
         </p>
       </article>
     )

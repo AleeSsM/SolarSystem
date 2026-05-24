@@ -33,7 +33,7 @@ export const solarSystemContent: TabContent = {
     {
       heading: 'Exploracion humana',
       paragraphs: [
-        'Desde Sputnik y Apollo hasta misiones como Voyager, Cassini y Perseverance, hemos enviado sondas a casi todos los planetas. Este simulador condensa esos datos en una experiencia interactiva.',
+        'Desde Sputnik hasta Perseverance, hemos mandado cosas a casi todos los planetas. Esta pagina es mi version casera de eso.',
       ],
     },
   ],

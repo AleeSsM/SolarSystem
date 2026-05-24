@@ -16,9 +16,9 @@ export function TeacherModeControls() {
           type="button"
           className="teacher-hud__start"
           onClick={startTeacherMode}
-          title="Iniciar presentacion guiada paso a paso"
+          title="Recorrido automatico por el sistema"
         >
-          Modo profesor
+          Tour guiado
         </button>
       </div>
     )
@@ -30,7 +30,7 @@ export function TeacherModeControls() {
   return (
     <div className="teacher-hud teacher-hud--active">
       <p className="teacher-hud__label">
-        Presentacion {teacherStepIndex + 1}/{TEACHER_STEP_COUNT}
+        Parada {teacherStepIndex + 1} / {TEACHER_STEP_COUNT}
       </p>
       <div className="teacher-hud__row">
         <button
@@ -60,5 +60,3 @@ export function TeacherModeControls() {
     </div>
   )
 }
-
-

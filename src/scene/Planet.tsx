@@ -7,7 +7,7 @@ import { computeBodyState } from '../simulation/orbit'
 import { getPlanetPhaseOffset } from '../simulation/realTime'
 import { getElapsedDays } from '../hooks/useSimulationClock'
 import { SaturnRings } from './SaturnRings'
-import { PLANET_SURFACE, getPlanetFillIntensity } from './planetLighting'
+import { usePlanetSurfaceMaterial } from './usePlanetSurfaceMaterial'
 import { useAppStore } from '../store/useAppStore'
 
 interface PlanetProps {
@@ -25,6 +25,7 @@ export function Planet({ data }: PlanetProps) {
   const followPlanet = useAppStore((s) => s.followPlanet)
   const timeMode = useAppStore((s) => s.timeMode)
   const planetFill = useAppStore((s) => s.planetFill)
+  const material = usePlanetSurfaceMaterial(texture, planetFill)
 
   const isSelected = selectedPlanetId === data.id
   const isHovered = hoveredPlanetId === data.id
@@ -48,8 +49,6 @@ export function Planet({ data }: PlanetProps) {
     mesh.rotation.y = rotationY
   })
 
-  const fillIntensity = getPlanetFillIntensity(planetFill)
-
   return (
     <mesh
       ref={meshRef}
@@ -69,14 +68,7 @@ export function Planet({ data }: PlanetProps) {
       }}
     >
       <sphereGeometry args={[data.radius, 48, 48]} />
-      <meshStandardMaterial
-        map={texture}
-        emissiveMap={fillIntensity > 0 ? texture : undefined}
-        emissive="#ffffff"
-        emissiveIntensity={fillIntensity}
-        roughness={PLANET_SURFACE.roughness}
-        metalness={PLANET_SURFACE.metalness}
-      />
+      <primitive object={material} attach="material" />
       {data.id === 'saturn' && <SaturnRings planetRadius={data.radius} />}
       {isHighlighted && (
         <Outlines

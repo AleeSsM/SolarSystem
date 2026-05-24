@@ -8,19 +8,19 @@ export function Sidebar() {
   return (
     <aside className="sidebar">
       <header className="sidebar__header">
-        <p className="sidebar__eyebrow">Simulador educativo 3D</p>
+        <p className="sidebar__eyebrow">Side project · Three.js</p>
         <h1 className="sidebar__title">Sistema Solar</h1>
         <p className="sidebar__subtitle">
           {phase === 'teacher'
-            ? 'Modo profesor activo — usa Anterior / Siguiente para presentar.'
-            : 'Explora el modelo 3D o inicia el modo profesor para una demo guiada.'}
+            ? 'Tour activo — Anterior / Siguiente para moverte.'
+            : 'Mueve la camara, clickea planetas y sube la velocidad si te aburres.'}
         </p>
       </header>
 
       {phase === 'teacher' ? <TeacherStepPanel /> : <EducationalPanel />}
 
       <footer className="sidebar__footer">
-        <span className="sidebar__badge">Paso 9 / 11 — Fase 8</span>
+        <span className="sidebar__badge">React + R3F</span>
       </footer>
     </aside>
   )

@@ -15,10 +15,10 @@ export interface TeacherStep {
 export const TEACHER_STEPS: TeacherStep[] = [
   {
     id: 'welcome',
-    title: 'Bienvenida al Sistema Solar',
+    title: 'Bienvenida',
     paragraphs: [
-      'Este simulador reproduce los ocho planetas orbitando al Sol con datos reales de la NASA, en un modelo visual simplificado pero coherente.',
-      'Usaremos una vista general del sistema. Observa la escala comprimida: las distancias y tamanos estan ajustados para que todo sea visible.',
+      'Ocho planetas orbitando al Sol, con periodos reales pero distancias y tamanos reescalados para que quepan en pantalla.',
+      'Empezamos con una vista general. Fijate como todo cabe: en la vida real Neptuno estaria muchisimo mas lejos.',
     ],
     camera: { type: 'overview' },
     showOrbits: false,
@@ -136,10 +136,10 @@ export const TEACHER_STEPS: TeacherStep[] = [
   },
   {
     id: 'closing',
-    title: 'Conclusion',
+    title: 'Listo',
     paragraphs: [
-      'Has recorrido los ocho planetas del Sistema Solar. Recuerda: distancias y tamanos aqui estan comprimidos, pero las velocidades orbitales respetan datos reales.',
-      'Explora libremente, consulta las pestanas educativas y usa los controles de tiempo para acelerar la simulacion. Gracias por tu atencion.',
+      'Eso fue el recorrido por los ocho planetas. Recuerda: aqui todo esta comprimido, pero las velocidades orbitales si respetan los periodos reales.',
+      'Ahora puedes explorar libre, abrir las pestanas del panel y subirle al tiempo hasta que Mercurio vuele.',
     ],
     camera: { type: 'overview' },
     showOrbits: true,

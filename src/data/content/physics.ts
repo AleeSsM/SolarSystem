@@ -3,44 +3,42 @@ import type { TabContent } from './types'
 export const physicsContent: TabContent = {
   id: 'physics',
   label: 'Fisica',
-  title: 'Leyes basicas del movimiento orbital',
+  title: 'Por que orbitan y no se caen',
   intro:
-    'Los planetas no "flotan" al azar: siguen reglas fisicas. Este simulador aplica una version simplificada de esas leyes, suficiente para un comportamiento creible.',
+    'Version corta de la fisica orbital, sin formulas locas. Lo justo para entender lo que ves en pantalla.',
   blocks: [
     {
-      heading: 'Gravedad y el Sol',
+      heading: 'Gravedad del Sol',
       paragraphs: [
-        'La gravedad es una atraccion entre masas. El Sol, al ser muchisimo mas masivo que cualquier planeta, domina el sistema: cada planeta cae hacia el Sol pero su velocidad lateral lo mantiene en orbita.',
-        'A mayor distancia, la atraccion es menor (ley del inverso del cuadrado). Por eso los planetas exteriores orbitan mas lento y tardan mas en completar una vuelta.',
+        'El Sol tira de todo. Cuanto mas lejos un planeta, menos fuerte el tiron (inverso del cuadrado de la distancia).',
       ],
     },
     {
-      heading: 'Por que no caen al Sol',
+      heading: 'Por que no chocan con el Sol',
       paragraphs: [
-        'Un planeta en orbita esta en continuo "free fall" hacia el Sol, pero tambien se desplaza lateralmente. Si esa velocidad tangencial es la adecuada, la caida y el avance se equilibran: la trayectoria cierra en una elipse (aqui, un circulo).',
+        'Cada planeta cae hacia el Sol pero tambien avanza de lado. Si la velocidad lateral es la correcta, la caida y el avance se equilibran y da una orbita.',
       ],
     },
     {
-      heading: 'Velocidad orbital relativa',
+      heading: 'Velocidades',
       paragraphs: [
-        'En este simulador, el angulo orbital avanza asi: angulo = (tiempo / periodo) × 2π. Mercurio (~88 dias) se mueve mucho mas rapido que Neptuno (~60 189 dias). Esa relacion es la misma que en la realidad.',
+        'Mercurio (~88 dias por vuelta) se mueve mucho mas rapido que Neptuno (~60 000 dias). Esa relacion si la respetamos.',
       ],
     },
     {
-      heading: 'Rotacion vs. revolucion',
+      heading: 'Rotar vs. orbitar',
       paragraphs: [
-        'Revolucion: una vuelta alrededor del Sol (ano). Rotacion: un giro sobre el propio eje (dia). La Tierra tarda ~365 dias en orbitar y ~1 dia en rotar. Venus rota en sentido contrario (retrograda) en la realidad; aqui usamos el valor absoluto para la animacion.',
+        'Orbitar = rodear al Sol (ano). Rotar = girar sobre si mismo (dia). La Tierra hace las dos a la vez.',
       ],
     },
     {
-      heading: 'Tercera ley de Kepler (intuicion)',
+      heading: 'Kepler en pocas palabras',
       paragraphs: [
-        'Kepler descubrio que el cuadrado del periodo orbital es proporcional al cubo de la distancia media al Sol. En terminos simples: planetas lejos tardan mucho mas en orbitar. Nuestros periodos vienen de las tablas de NASA.',
+        'Planetas lejos tardan mas en dar la vuelta. Los periodos que uso vienen de tablas publicas.',
       ],
       bullets: [
-        'Periodo corto → orbita pequena (Mercurio)',
-        'Periodo largo → orbita grande (Neptuno)',
-        'No es magia: es gravedad + conservacion del momento',
+        'Cerca del Sol → orbita corta',
+        'Lejos del Sol → orbita larga',
       ],
     },
   ],

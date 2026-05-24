@@ -7,7 +7,8 @@ import { getPlanetById } from '../data/planets'
 import { getElapsedDays } from '../hooks/useSimulationClock'
 import { computeBodyState, computeOrbitAngle, getCircularOrbitPosition } from '../simulation/orbit'
 import { getPlanetPhaseOffset } from '../simulation/realTime'
-import { MOON_SURFACE, getPlanetFillIntensity } from './planetLighting'
+import { MOON_SURFACE } from './planetLighting'
+import { usePlanetSurfaceMaterial } from './usePlanetSurfaceMaterial'
 import { useAppStore } from '../store/useAppStore'
 
 interface MoonProps {
@@ -19,7 +20,7 @@ export function Moon({ data }: MoonProps) {
   const texture = useTexture(data.textureUrl)
   const timeMode = useAppStore((s) => s.timeMode)
   const planetFill = useAppStore((s) => s.planetFill)
-  const fillIntensity = getPlanetFillIntensity(planetFill)
+  const material = usePlanetSurfaceMaterial(texture, planetFill, MOON_SURFACE)
 
   useFrame(() => {
     const mesh = meshRef.current
@@ -56,14 +57,7 @@ export function Moon({ data }: MoonProps) {
   return (
     <mesh ref={meshRef} name={data.id}>
       <sphereGeometry args={[data.radius, 24, 24]} />
-      <meshStandardMaterial
-        map={texture}
-        emissiveMap={fillIntensity > 0 ? texture : undefined}
-        emissive="#ffffff"
-        emissiveIntensity={fillIntensity}
-        roughness={MOON_SURFACE.roughness}
-        metalness={MOON_SURFACE.metalness}
-      />
+      <primitive object={material} attach="material" />
     </mesh>
   )
 }

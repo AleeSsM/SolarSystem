@@ -10,9 +10,9 @@ export function TeacherStepPanel() {
   return (
     <article className="teacher-panel">
       <header className="teacher-panel__header">
-        <span className="teacher-panel__badge">Modo profesor</span>
+        <span className="teacher-panel__badge">Tour guiado</span>
         <span className="teacher-panel__step">
-          Paso {teacherStepIndex + 1} / {TEACHER_STEP_COUNT}
+          {teacherStepIndex + 1} / {TEACHER_STEP_COUNT}
         </span>
       </header>
       <h2 className="teacher-panel__title">{step.title}</h2>

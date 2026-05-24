@@ -2,45 +2,45 @@ import type { TabContent } from './types'
 
 export const modelContent: TabContent = {
   id: 'model',
-  label: 'Modelo',
-  title: 'Que simplifica este simulador',
+  label: 'Detalles',
+  title: 'Como esta hecho el modelo',
   intro:
-    'Este proyecto no replica el Sistema Solar a escala real. Usa un modelo visual coherente: las proporciones estan ajustadas para que puedas ver, entender y explorar.',
+    'No es el Sistema Solar a escala real. Es una version trucada para que se vea bien en pantalla y aun asi se comporte de forma creible.',
   blocks: [
     {
       heading: 'Distancias comprimidas',
       paragraphs: [
-        'En la realidad, Neptuno esta 30 veces mas lejos del Sol que la Tierra. A escala real, los planetas interiores serian invisibles si quisieras ver todo el sistema.',
-        'Usamos una escala potencial: orbitRadius = 12 + UA^0.65 × 10. La Tierra queda a 22 unidades; Neptuno a ~124. Ver docs/escalas.md para detalle.',
+        'Neptuno esta unas 30 veces mas lejos que la Tierra. Si usaramos escala real, los planetas interiores serian puntitos.',
+        'La formula es algo asi: orbitRadius = 12 + UA^0.65 × 10. Tierra a ~22 unidades, Neptuno a ~124.',
       ],
     },
     {
-      heading: 'Tamanos exagerados',
+      heading: 'Planetas mas gordos de lo debido',
       paragraphs: [
-        'Si los planetas fueran a escala con las distancias, se verian como puntos. Los radios estan exagerados (Jupiter ~2.5× el tamano visual de la Tierra, no 11×) para distinguirlos desde lejos.',
+        'A escala real serian imperceptibles. Los hice mas grandes a proposito para distinguirlos desde lejos.',
       ],
     },
     {
       heading: 'Orbitas circulares',
       paragraphs: [
-        'Las orbitas reales son elipses (la excentricidad de Mercurio es notable). Aqui usamos circulos en planos ligeramente inclinados: suficiente para visualizar el movimiento sin complejidad excesiva.',
+        'En la vida real son elipses. Aqui circulos con un poco de inclinacion — suficiente para ver el movimiento sin volver loco el codigo.',
       ],
     },
     {
-      heading: 'Tiempo a escala real',
+      heading: 'Tiempo',
       paragraphs: [
-        'Con timeScale = x1, un dia simulado equivale a un dia real: la Tierra tarda ~365 dias en completar una orbita, igual que en la naturaleza. Los multiplicadores x100k, x1M, x10M y x100M aceleran ese ritmo manteniendo las proporciones entre periodos orbitales (datos NASA).',
+        'A x1 un dia simulado = un dia real. Los botones x100k, x1M, etc. aceleran todo manteniendo las proporciones entre planetas.',
       ],
       bullets: [
-        'Velocidades angulares basadas en periodos reales',
-        'Pausa, play y multiplicadores x100k–x100M',
-        'Rotacion propia independiente de la orbita',
+        'Mercurio sigue yendo mas rapido que Neptuno',
+        'Pausa / play cuando quieras',
+        'Tiempo Real ancla a la fecha de hoy',
       ],
     },
     {
-      heading: 'Arquitectura del codigo',
+      heading: 'Codigo',
       paragraphs: [
-        'La simulacion (simulation/) calcula posiciones sin depender de Three.js. La escena (scene/) solo renderiza. Los datos (data/) alimentan ambas capas. Esto permite documentar y extender el modelo con rigor.',
+        'La simulacion vive en simulation/ (sin Three.js). La escena solo pinta. Los datos estan en data/. Asi es mas facil de mantener.',
       ],
     },
   ],
