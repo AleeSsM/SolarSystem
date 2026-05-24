@@ -23,10 +23,6 @@
 }
 
 .source-hud {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 12;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -41,6 +37,27 @@
   letter-spacing: 0.04em;
   text-decoration: none;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.top-hud {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.source-hud--toggle {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.source-hud--toggle-active {
+  background: rgba(255, 176, 80, 0.16);
+  border-color: rgba(255, 176, 80, 0.55);
+  color: #ffe8c8;
 }
 
 .source-hud__icon {
@@ -231,6 +248,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.intro-overlay__skip {
+  pointer-events: auto;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 16;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(139, 156, 255, 0.35);
+  background: rgba(6, 6, 18, 0.82);
+  backdrop-filter: blur(8px);
+  color: #c8d4ff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.intro-overlay__skip:hover {
+  background: rgba(139, 156, 255, 0.18);
+  border-color: rgba(139, 156, 255, 0.55);
+  color: #eef2ff;
 }
 
 .intro-overlay__title-block {

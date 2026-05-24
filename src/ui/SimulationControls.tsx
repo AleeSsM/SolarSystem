@@ -22,11 +22,7 @@ export function SimulationControls() {
 
   if (introActive) return null
 
-  const timeLabel = isRealTime
-    ? timeScale > 1
-      ? `Fecha simulada (x${timeScale.toLocaleString('es')})`
-      : 'Fecha y hora'
-    : 'Tiempo simulado'
+  const timeLabel = isRealTime ? 'Fecha simulada' : 'Tiempo simulado'
 
   const timeValue = isRealTime
     ? formatSimDaysAsDate(simulatedDays)
@@ -84,12 +80,6 @@ export function SimulationControls() {
           ))}
         </div>
       </div>
-      {isRealTime && timeScale === 1 && (
-        <p className="sim-hud__hint">A x1 el movimiento es casi imperceptible; prueba x100k, x1M o x10M.</p>
-      )}
-      {!isRealTime && timeScale === 1 && (
-        <p className="sim-hud__hint">A x1 un ano terrestre tarda ~365 dias; usa x100k o x1M para ver orbitas.</p>
-      )}
       <div className="sim-hud__slider-row">
         <label className="sim-hud__label" htmlFor="planet-fill">
           Brillo planetas

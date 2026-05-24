@@ -41,6 +41,9 @@ interface AppState {
   travelInfoRevealed: boolean
   /** Incrementa en cada viaje para reiniciar animacion (click o select). */
   travelRequestId: number
+  /** Modo helicoidal: Sol avanza en linea recta y planetas en plano XY. */
+  helicalMotion: boolean
+  helicalMotionStartDays: number
   /** 0 = zoom out, 100 = zoom in (solo al seguir planeta). */
   followZoom: number
   activeEducationalTab: EducationalTabId
@@ -65,6 +68,7 @@ interface AppState {
   setTravelTitleVisible: (visible: boolean) => void
   finishTravel: () => void
   cancelTravel: () => void
+  toggleHelicalMotion: () => void
   setActiveEducationalTab: (tab: EducationalTabId) => void
 
   followPlanet: (id: string) => void
@@ -121,7 +125,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   selectedPlanetId: null,
   hoveredPlanetId: null,
   isPaused: true,
-  timeScale: 1,
+  timeScale: 1_000_000,
   timeMode: 'simulated',
   showOrbits: true,
   showLabels: false,
@@ -133,6 +137,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   travelTitleVisible: false,
   travelInfoRevealed: true,
   travelRequestId: 0,
+  helicalMotion: false,
+  helicalMotionStartDays: 0,
   followZoom: 42,
   activeEducationalTab: 'system',
 
@@ -154,7 +160,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
   setTimeScale: (scale) => {
     const { timeMode, timeScale: currentScale, isPaused } = get()
-    const allowed = scale <= 10_000_000 ? scale : 10_000_000
+    const allowed = scale <= 1_000_000_000 ? scale : 1_000_000_000
     if (timeMode === 'realTime' && !isPaused && allowed !== currentScale) {
       reanchorRealTimeClock(currentScale)
     }
@@ -177,7 +183,15 @@ export const useAppStore = create<AppState>((set, get) => ({
   setPlanetFill: (value) => set({ planetFill: Math.min(100, Math.max(0, value)) }),
   setFollowZoom: (value) => set({ followZoom: Math.min(100, Math.max(0, value)) }),
   setIntroTitleVisible: (visible) => set({ introTitleVisible: visible }),
-  finishIntro: () => set({ introActive: false, introTitleVisible: false, isPaused: false }),
+  finishIntro: () =>
+    set({
+      introActive: false,
+      introTitleVisible: false,
+      isPaused: false,
+      cameraMode: 'free',
+      followPlanetId: null,
+      cameraTransition: 'overview',
+    }),
   setTravelTitleVisible: (visible) => set({ travelTitleVisible: visible }),
   finishTravel: () =>
     set({
@@ -194,6 +208,18 @@ export const useAppStore = create<AppState>((set, get) => ({
       travelTitleVisible: false,
       travelInfoRevealed: true,
     }),
+  toggleHelicalMotion: () => {
+    const { helicalMotion, isPaused } = get()
+    if (helicalMotion) {
+      set({ helicalMotion: false, helicalMotionStartDays: 0 })
+      return
+    }
+    set({
+      helicalMotion: true,
+      helicalMotionStartDays: getElapsedDays(),
+      ...(isPaused ? { isPaused: false } : {}),
+    })
+  },
   setActiveEducationalTab: (tab) => set({ activeEducationalTab: tab }),
 
   followPlanet: (id) => {
@@ -267,7 +293,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({
       phase: 'explore',
       teacherStepIndex: 0,
-      timeScale: 1,
+      timeScale: 1_000_000,
       showOrbits: true,
       showLabels: false,
       cameraMode: 'free',

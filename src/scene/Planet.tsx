@@ -15,7 +15,7 @@ import { getPlanetPhaseOffset } from '../simulation/realTime'
 import { getElapsedDays } from '../hooks/useSimulationClock'
 
 import { SaturnRings } from './SaturnRings'
-
+import { HelicalTrail, getPlanetTrailSettings } from './HelicalTrail'
 import { usePlanetSurfaceMaterial } from './usePlanetSurfaceMaterial'
 
 import { useAppStore } from '../store/useAppStore'
@@ -57,8 +57,9 @@ export function Planet({ data }: PlanetProps) {
   const timeMode = useAppStore((s) => s.timeMode)
 
   const planetFill = useAppStore((s) => s.planetFill)
-
+  const helicalOrigin = useAppStore((s) => s.helicalMotionStartDays)
   const material = usePlanetSurfaceMaterial(texture, planetFill)
+  const trail = getPlanetTrailSettings(data.radius, data.orbitRadius)
 
 
 
@@ -86,29 +87,20 @@ export function Planet({ data }: PlanetProps) {
 
 
 
+    const elapsed = getElapsedDays()
+    const phaseOffset = getPlanetPhaseOffset(data.id, timeMode, data.orbitPhaseOffset)
+
     const { position, rotationY } = computeBodyState(
-
-      getElapsedDays(),
-
+      elapsed,
       data.orbitRadius,
-
       data.orbitalPeriodDays,
-
       data.rotationPeriodDays,
-
       data.inclinationDeg,
-
-      getPlanetPhaseOffset(data.id, timeMode, data.orbitPhaseOffset),
-
+      phaseOffset,
     )
 
-
-
     mesh.position.set(...position)
-
     mesh.rotation.y = rotationY
-
-
 
     if (showLabel) {
 
@@ -133,15 +125,18 @@ export function Planet({ data }: PlanetProps) {
 
 
   return (
-
-    <mesh
-
-      ref={meshRef}
-
-      name={data.id}
-
-      onPointerOver={(event) => {
-
+    <HelicalTrail
+      color={data.orbitColor}
+      width={trail.width}
+      maxPoints={trail.maxPoints}
+      minSampleDist={trail.minSampleDist}
+      sourceRef={meshRef}
+      trailKey={`${helicalOrigin}-${data.id}`}
+    >
+      <mesh
+        ref={meshRef}
+        name={data.id}
+        onPointerOver={(event) => {
         if (introActive || travelActive) return
 
         event.stopPropagation()
@@ -234,10 +229,7 @@ export function Planet({ data }: PlanetProps) {
 
       )}
 
-    </mesh>
-
+      </mesh>
+    </HelicalTrail>
   )
-
 }
-
-

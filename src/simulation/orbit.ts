@@ -14,7 +14,7 @@ export function computeRotation(elapsedDays: number, rotationPeriodDays: number)
   return (elapsedDays / rotationPeriodDays) * Math.PI * 2
 }
 
-/** Posicion en orbita circular con inclinacion opcional (grados). */
+/** Orbita horizontal en plano XZ (vista cenital del modelo). */
 export function getCircularOrbitPosition(
   orbitRadius: number,
   angle: number,
@@ -27,7 +27,7 @@ export function getCircularOrbitPosition(
   return [x, y, z]
 }
 
-/** Estado completo de un cuerpo orbitante. */
+/** Estado heliocentrico local (sin deriva galactica). */
 export function computeBodyState(
   elapsedDays: number,
   orbitRadius: number,

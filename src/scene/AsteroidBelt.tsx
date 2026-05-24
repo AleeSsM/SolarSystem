@@ -1,7 +1,10 @@
-import { useLayoutEffect, useMemo, useRef } from 'react'
+﻿import { useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { auToOrbitRadius } from '../data/scales'
+import { getElapsedDays } from '../hooks/useSimulationClock'
+import { EARTH_ORBIT_DAYS } from '../simulation/constants'
+import { computeOrbitAngle, computeRotation } from '../simulation/orbit'
 
 const ASTEROID_COUNT = 520
 const INNER_AU = 2.15
@@ -12,6 +15,10 @@ const ASTEROID_PALETTE = ['#9a8a72', '#b8a088', '#7a6a58', '#c4a882', '#6e6254',
 function rng(seed: number, n: number) {
   const x = Math.sin(seed * 127.1 + n * 311.7) * 43758.5453
   return x - Math.floor(x)
+}
+
+function beltOrbitalPeriodDays(au: number) {
+  return EARTH_ORBIT_DAYS * au ** 1.5
 }
 
 export function AsteroidBelt() {
@@ -28,7 +35,17 @@ export function AsteroidBelt() {
       const size = 0.05 + rng(i, 4) * 0.14
       const color = ASTEROID_PALETTE[Math.floor(rng(i, 5) * ASTEROID_PALETTE.length)]
       const spin = rng(i, 6) * Math.PI * 2
-      return { radius, angle, y, size, color, spin }
+      const spinRateDays = 0.4 + rng(i, 7) * 1.6
+      return {
+        radius,
+        angle,
+        y,
+        size,
+        color,
+        spin,
+        orbitalPeriodDays: beltOrbitalPeriodDays(au),
+        spinRateDays,
+      }
     })
   }, [])
 
@@ -40,6 +57,7 @@ export function AsteroidBelt() {
         angle: rng(i + 500, 2) * Math.PI * 2,
         y: (rng(i + 500, 3) - 0.5) * 2.4,
         size: 0.025 + rng(i + 500, 4) * 0.04,
+        orbitalPeriodDays: beltOrbitalPeriodDays(au),
       }
     })
   }, [])
@@ -53,20 +71,24 @@ export function AsteroidBelt() {
     mesh.instanceColor!.needsUpdate = true
   }, [seeds])
 
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime() * 0.018
+  useFrame(() => {
+    const elapsed = getElapsedDays()
     const mesh = meshRef.current
     const dust = dustRef.current
 
     if (mesh) {
       seeds.forEach((seed, i) => {
-        const angle = seed.angle + t / Math.sqrt(seed.radius)
+        const angle = computeOrbitAngle(elapsed, seed.orbitalPeriodDays, seed.angle)
         dummy.position.set(
           seed.radius * Math.cos(angle),
           seed.y,
           seed.radius * Math.sin(angle),
         )
-        dummy.rotation.set(seed.spin + t * 0.4, angle, t * 0.25)
+        dummy.rotation.set(
+          seed.spin + computeRotation(elapsed, seed.spinRateDays),
+          angle,
+          computeRotation(elapsed, seed.spinRateDays * 1.4),
+        )
         dummy.scale.setScalar(seed.size)
         dummy.updateMatrix()
         mesh.setMatrixAt(i, dummy.matrix)
@@ -76,7 +98,7 @@ export function AsteroidBelt() {
 
     if (dust) {
       dustSeeds.forEach((seed, i) => {
-        const angle = seed.angle + t * 0.6 / Math.sqrt(seed.radius)
+        const angle = computeOrbitAngle(elapsed, seed.orbitalPeriodDays, seed.angle)
         dummy.position.set(
           seed.radius * Math.cos(angle),
           seed.y,

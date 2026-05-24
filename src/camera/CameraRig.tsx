@@ -236,6 +236,12 @@ export function CameraRig() {
       const stage = travelStage.current
       const duration = TRAVEL_DURATIONS[stage]
       const t = Math.min(1, travelElapsed.current / duration)
+
+      if (travelElapsed.current > duration + 2) {
+        finishTravel()
+        controls.update()
+        return
+      }
       const planetPos = new Vector3(...getPlanetPosition(planet))
 
       const fov = sampleTravelFrame(

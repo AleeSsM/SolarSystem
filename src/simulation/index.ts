@@ -14,3 +14,10 @@ export {
   formatRealWorldDate,
   MEAN_LONGITUDE_J2000,
 } from './realTime'
+export {
+  getHelicalMotionOriginDays,
+  getHelicalTrailYOffset,
+  isHelicalMotionActive,
+  SUN_ROTATION_PERIOD_DAYS,
+  HELICAL_TRAIL_Y_UNITS_PER_DAY,
+} from './systemMotion'

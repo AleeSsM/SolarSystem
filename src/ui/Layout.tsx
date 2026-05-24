@@ -1,6 +1,7 @@
 import { Viewport3D } from '../scene/Viewport3D'
 import { useAppStore } from '../store/useAppStore'
 import { CameraControls } from './CameraControls'
+import { HelicalMotionHud } from './HelicalMotionHud'
 import { IntroOverlay } from './IntroOverlay'
 import { TravelOverlay } from './TravelOverlay'
 import { SourceLinkHud } from './SourceLinkHud'
@@ -15,7 +16,10 @@ export function Layout() {
     <div className={`app-layout ${introActive ? 'app-layout--intro' : ''}`}>
       <main className="viewport">
         <Viewport3D />
-        <SourceLinkHud />
+        <div className="top-hud">
+          <HelicalMotionHud />
+          <SourceLinkHud />
+        </div>
         <IntroOverlay />
         <TravelOverlay />
         <CameraControls />

@@ -7,12 +7,14 @@ import { Moon } from './Moon'
 import { OrbitPath } from './OrbitPath'
 import { Planet } from './Planet'
 import { PostEffects } from './PostEffects'
+import { SolarSystemGroup } from './SolarSystemGroup'
 import { SpaceSkybox } from './SpaceSkybox'
 import { Starfield } from './Starfield'
 import { Sun } from './Sun'
 
 export function SolarScene() {
   const showOrbits = useAppStore((s) => s.showOrbits)
+  const helicalMotion = useAppStore((s) => s.helicalMotion)
 
   return (
     <>
@@ -23,26 +25,28 @@ export function SolarScene() {
       <SpaceSkybox />
       <Starfield />
 
-      <Sun />
+      <SolarSystemGroup>
+        <Sun />
 
-      {PLANETS.map((planet) => (
-        <group key={planet.id}>
-          {showOrbits && (
-            <OrbitPath
-              radius={planet.orbitRadius}
-              color={planet.orbitColor}
-              inclinationDeg={planet.inclinationDeg}
-            />
-          )}
-          <Planet data={planet} />
-        </group>
-      ))}
+        {PLANETS.map((planet) => (
+          <group key={planet.id}>
+            {showOrbits && !helicalMotion && (
+              <OrbitPath
+                radius={planet.orbitRadius}
+                color={planet.orbitColor}
+                inclinationDeg={planet.inclinationDeg}
+              />
+            )}
+            <Planet data={planet} />
+          </group>
+        ))}
 
-      <AsteroidBelt />
+        <AsteroidBelt />
 
-      {MOONS.map((moon) => (
-        <Moon key={moon.id} data={moon} />
-      ))}
+        {MOONS.map((moon) => (
+          <Moon key={moon.id} data={moon} />
+        ))}
+      </SolarSystemGroup>
 
       <PostEffects />
     </>

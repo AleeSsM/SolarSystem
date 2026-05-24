@@ -6,8 +6,9 @@ import { useAppStore } from '../store/useAppStore'
 
 export function getPlanetPosition(planet: PlanetData): Vec3 {
   const timeMode = useAppStore.getState().timeMode
+  const elapsed = getElapsedDays()
   const { position } = computeBodyState(
-    getElapsedDays(),
+    elapsed,
     planet.orbitRadius,
     planet.orbitalPeriodDays,
     planet.rotationPeriodDays,

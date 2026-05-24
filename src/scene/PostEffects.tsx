@@ -1,14 +1,17 @@
 import { Bloom, EffectComposer } from '@react-three/postprocessing'
+import { useAppStore } from '../store/useAppStore'
 
 export function PostEffects() {
+  const helicalMotion = useAppStore((s) => s.helicalMotion)
+
   return (
     <EffectComposer multisampling={0}>
       <Bloom
-        luminanceThreshold={0.92}
-        luminanceSmoothing={0.25}
-        intensity={1.5}
+        luminanceThreshold={helicalMotion ? 0.48 : 0.92}
+        luminanceSmoothing={0.2}
+        intensity={helicalMotion ? 2.75 : 1.5}
         mipmapBlur
-        radius={0.8}
+        radius={0.85}
       />
     </EffectComposer>
   )
